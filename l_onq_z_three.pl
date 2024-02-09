@@ -34,6 +34,25 @@ dite(katrin, vladina).
 dite(katrin, sveta).
 dite(katrin, zoya).
 
+%Предикат проверяет, является ли X дедушкой Y.
+grand_pa(X, Y) :- dite(Z, Y), dite(X, Z), man(X).
+
+%Предикат выводит всех дедушек X.
+grand_pas(X) :- dite(Z, Y), dite(Y, X), man(Z), write(Z), nl, fail.
+grand_pas(_).
+
+%Предикат проверяет, являются ли X и Y 
+%дедушкой и внучкой или внучкой и дедушкой.
+grand_pa_and_da(X,Y) :- grand_pa(X,Y).
+grand_pa_and_da(X,Y) :- grand_pa(Y,X).
+
+%Предикат проверяет, является ли X тетей Y. 
+aunt(X, Y) :- b_s(X, Z), dite(Z, Y), woman(X).
+
+%Предикат, который выводит всех тетей X.
+aunts(X) :- b_s(Y, Z), dite(Y, X), woman(Z), write(Z), nl, fail.
+aunts(_).
+
 %Предикат проверяет, является ли X сыном Y.
 son(X, Y) :- dite(Y, X), man(X), man(Y).
 son.
