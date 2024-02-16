@@ -43,8 +43,8 @@ grand_pas(_).
 
 %Предикат проверяет, являются ли X и Y 
 %дедушкой и внучкой или внучкой и дедушкой.
-grand_pa_and_da(X,Y) :- grand_pa(X,Y).
-grand_pa_and_da(X,Y) :- grand_pa(Y,X).
+grand_pa_and_da(X,Y) :- grand_pa(X,Y), woman(Y).
+grand_pa_and_da(X,Y) :- grand_pa(Y,X), woman(X).
 
 %Предикат проверяет, является ли X тетей Y. 
 aunt(X, Y) :- b_s(X, Z), dite(Z, Y), woman(X).
@@ -54,7 +54,7 @@ aunts(X) :- b_s(Y, Z), dite(Y, X), woman(Z), write(Z), nl, fail.
 aunts(_).
 
 %Предикат проверяет, является ли X сыном Y.
-son(X, Y) :- dite(Y, X), man(X), man(Y).
+son(X, Y) :- dite(Y, X), man(X).
 son.
 
 %Предикат выводит сына X.
