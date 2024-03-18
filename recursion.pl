@@ -112,7 +112,7 @@ sum_list_up([X|Xs], Sum) :-
     Sum is Sum1 + X.
 
 
-% Предикат, который удаляет все элементы, сумма цифр которых равна данной. (УНИФ - List, Sum | НЕУНИФ - X, Xs, NewList, SumX, Rest)
+%  Предикат, который удаляет все элементы, сумма цифр которых равна данной. (УНИФ - List, Sum | НЕУНИФ - X, Xs, NewList, SumX, Rest)
 remove_by_sum([], _, []).
 remove_by_sum([X|Xs], Sum, NewList) :-
     sum_of_digits(X, SumX),
