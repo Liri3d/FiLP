@@ -1,3 +1,5 @@
+% Задание 1
+
 % Предикат находит максимальное из чисел. (УНИФ - X, Y, Z | НЕУНИФ - U)
 max(X, Y, Z, U) :-
     X >= Y,
@@ -132,3 +134,114 @@ remove_elements_with_sum :-
     write(Sum),
     write(': '),
     write_list(NewList).
+
+
+
+% Вариант №4
+
+% Задание 2
+  
+%Найти произведение цифр числа с помощью рекурсии вверх. (УНИФ - N | НЕУНИФ - Prod, Prod1, Remainder, Quotien)
+product_numbers(N, Prod) :-
+    N < 10,
+    Prod is N.
+product_numbers(N, Prod) :-
+    N >= 10,
+    Quotient is N div 10,
+    Remainder is N mod 10,
+    product_numbers(Quotient, Prod1),
+    Prod is Prod1 * Remainder.
+
+% C помощью рекурсии вниз. (УНИФ - N | НЕУНИФ - Prod, Acc, Acc1, Remainder, Quotien)
+product_numbers_d(N, Prod) :-
+    product_numbers_helper(N, 1, Prod).
+
+product_numbers_helper(0, Acc, Acc).
+product_numbers_helper(N, Acc, Prod) :-
+    Quotient is N div 10,
+    Remainder is N mod 10,
+    Acc1 is Acc * Remainder,
+    product_numbers_helper(Quotient, Acc1, Prod).
+
+
+
+
+
+
+%Найти максимальную цифры числа, не делящуюся на 3 с помощью рекурсии вверх. (УНИФ - N | НЕУНИФ - MaxDigit, LastDigit, NextN, MaxDigit1)
+find_max_digit(N, MaxDigit) :-
+    N < 10,
+    MaxDigit is N.
+
+find_max_digit(N, MaxDigit) :-
+    N >= 10,
+    LastDigit is N mod 10,
+    NextN is N div 10,
+    (NextN is 0 ->
+        (LastDigit mod 3 =\= 0 ->
+            MaxDigit is LastDigit
+        ;
+            find_max_digit(NextN, MaxDigit)
+        )
+    ;
+        find_max_digit(NextN, MaxDigit1),
+        (LastDigit mod 3 =\= 0, LastDigit > MaxDigit1 ->
+            MaxDigit is LastDigit
+        ;
+            MaxDigit is MaxDigit1
+        )
+    ).
+
+% С помощью рекурсии вниз. (УНИФ - N | НЕУНИФ - MaxDigit, LastDigit, NextN, MaxDigit1)
+find_max_digit_d(N, MaxDigit) :-
+    N < 10,
+    MaxDigit is N.
+find_max_digit_d(N, MaxDigit) :-
+    N >= 10,
+    NextN is N div 10,
+    find_max_digit_d(NextN, MaxDigit1),
+    LastDigit is N mod 10,
+    (LastDigit mod 3 =\= 0, LastDigit > MaxDigit1 ->
+        MaxDigit is LastDigit
+    ;
+        MaxDigit is MaxDigit1
+    ).
+
+
+
+
+%Найти количество делителей числа c помощью рекурсии вверх. (УНИФ - N | НЕУНИФ - Count, Divisor, NextDivisor, Count1)
+count_divisors(N, Count) :-
+    count_divisors_helper(N, 1, Count).
+
+count_divisors_helper(N, Divisor, Count) :-
+    Divisor > N // 2,
+    Count is 1. % базовый случай: число делителей равно 1 (число делится только на себя)
+count_divisors_helper(N, Divisor, Count) :-
+    Divisor =< N // 2,
+    (N mod Divisor =:= 0 ->
+        NextDivisor is Divisor + 1,
+        count_divisors_helper(N, NextDivisor, Count1),
+        Count is Count1 + 1
+    ;
+        NextDivisor is Divisor + 1,
+        count_divisors_helper(N, NextDivisor, Count)
+    ).
+
+% С помощью рекурсии вниз.(УНИФ - N | НЕУНИФ - Count, Divisor, NextDivisor, Count1)
+count_divisors_d(N, Count) :-
+    count_divisors_d_helper(N, 1, Count).
+
+count_divisors_d_helper(N, Divisor, Count) :-
+    (Divisor > N ->
+        Count is 0 % базовый случай: делитель превысил число, делителей нет
+    ;
+        (N mod Divisor =:= 0 ->
+            NextDivisor is Divisor + 1,
+            count_divisors_d_helper(N, NextDivisor, Count1),
+            Count is Count1 + 1 % число делителей увеличивается на 1
+        ;
+            NextDivisor is Divisor + 1,
+            count_divisors_d_helper(N, NextDivisor, Count)
+        )
+    ).
