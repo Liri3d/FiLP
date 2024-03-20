@@ -245,3 +245,88 @@ count_divisors_d_helper(N, Divisor, Count) :-
             count_divisors_d_helper(N, NextDivisor, Count)
         )
     ).
+
+
+
+
+
+% Задание 3
+
+% 4. Дан целочисленный массив. Вывести индексы массива в том порядке, в
+%котором соответствующие им элементы образуют убывающую последовательность.
+
+%(УНИФ - Array | НЕУНИФ - Indexes, IndexedArray, Index, IndexedT, IndexH, NewIndex, T, SortedArray, Rest, RestIndex, RestIndexes)
+assign_and_get_descending_indexes(Array, Indexes) :-
+    assign_indexes(Array, IndexedArray),
+    get_descending_indexes(IndexedArray, Indexes).
+
+% Предикат для присвоения индексов массиву
+assign_indexes(Array, IndexedArray) :-
+    assign_indexes(Array, 1, IndexedArray).
+assign_indexes([], _, []).
+assign_indexes([H|T], Index, [(Index,H)|IndexedT]) :-
+    NewIndex is Index + 1,
+    assign_indexes(T, NewIndex, IndexedT).
+
+% Предикат для получения убывающей последовательности 
+get_descending_indexes([], []).
+get_descending_indexes(Array, Indexes) :-
+    % Сортировка по убыванию элементов
+    sort(2, @>=, Array, SortedArray),
+    % Берем индексы из отсортированного массива
+    extract_indexes(SortedArray, Indexes).
+extract_indexes([], []).
+extract_indexes([(Index, _) | Rest], [Index | RestIndexes]) :-
+    extract_indexes(Rest, RestIndexes).
+
+
+
+% 21. Дан целочисленный массив. Необходимо найти элементы, расположенные
+% после первого максимального.
+%(УНИФ - List | НЕУНИФ - Elements, Max, X, Xs, CurrentMax, Y)
+find_elements_after_max(List, Elements) :-
+    find_max(List, Max),
+    append(_, [Max|Elements], List).
+ 
+find_max([X|Xs], Max) :-
+    find_max(Xs, X, Max).
+
+find_max([], Max, Max).
+
+find_max([X|Xs], CurrentMax, Max) :-
+    X > CurrentMax,
+    find_max(Xs, X, Max).
+
+find_max([Y|Xs], CurrentMax, Max) :-
+    Y =< CurrentMax,
+    find_max(Xs, CurrentMax, Max).
+
+
+
+% 32. Дан целочисленный массив. Найти количество его локальных максимумов.
+% Правило для проверки, является ли элемент массива локальным максимумом
+
+%(УНИФ - Array | НЕУНИФ - Index, Length, Elem, PrevElem, NextElem, Count, Maxes)
+is_local_max(Array, Index) :-
+    length(Array, Length),
+    Index > 1, Index < Length,
+    nth1(Index, Array, Elem),
+    nth1(Index-1, Array, PrevElem),
+    nth1(Index+1, Array, NextElem),
+    Elem > PrevElem, Elem > NextElem.
+
+% Правило для подсчета количества локальных максимумов в массиве
+count_local_maxes(Array, Count) :-
+    findall(Index, is_local_max(Array, Index), Maxes),
+    length(Maxes, Count).
+
+
+
+
+
+% Задание 4 
+
+% Вариант № 4. В бутылке, стакане, кувшине и банке находятся молоко, лимонад, квас
+% и вода. Известно, что вода и молоко не в бутылке, сосуд с лимонадом находится между
+% кувшином и сосудом с квасом, в банке - не лимонад и не вода. Стакан находится около
+% банки и сосуда с молоком. Как распределены эти жидкости по сосудам.
