@@ -330,3 +330,40 @@ count_local_maxes(Array, Count) :-
 % и вода. Известно, что вода и молоко не в бутылке, сосуд с лимонадом находится между
 % кувшином и сосудом с квасом, в банке - не лимонад и не вода. Стакан находится около
 % банки и сосуда с молоком. Как распределены эти жидкости по сосудам.
+
+in_list([El|_],El).
+in_list([_|T],El):-in_list(T,El).
+
+sprava_next(A,B,[C]):-fail.
+sprava_next(A,B,[A|[B|Tail]]).
+sprava_next(A,B,[_|List]):-sprava_next(A,B,List).
+
+sleva_next(A,B,[C]):-fail.
+sleva_next(A,B,[B|[A|Tail]]).
+sleva_next(A,B,[_|List]):-sleva_next(A,B,List).
+
+next_to(A,B,List):-sprava_next(A,B,List).
+next_to(A,B,List):-sleva_next(A,B,List).
+
+pr_ein:- Houses=[_,_,_,_],
+        
+        % Вода и молоко не в бутылке 
+        (in_list(Houses,[bottle,kvas]); in_list(Houses,[bottle,limon])),
+        
+        % сосуд с лимонадом находится между кувшином и сосудом с квасом
+        next_to([_,limon],[jug,_],Houses),
+        next_to([_,limon],[_,kvas],Houses),
+        
+        % В банке - не лимонад и не вода
+        (in_list(Houses,[jar,kvas]); in_list(Houses,[jar,milk])),
+        
+        % Стакан находится около банки и сосуда с молоком
+        next_to([glass,_],[jar,_],Houses),
+        next_to([glass,_],[_,milk],Houses),
+
+		in_list(Houses,[WHO1,water]),
+		in_list(Houses,[WHO2,limon]),
+        in_list(Houses,[WHO3,milk]),
+		in_list(Houses,[WHO4,kvas]),
+		write(Houses).
+		% nl,write(WHO1),nl,write(WHO2),nl,write(WHO3),nl,write(WHO4).
