@@ -371,3 +371,126 @@ writeFile(File, [Sentence|Sentences]) :-
     writeFile(File, Sentences).
 
 % go_search_sentence('dataset_min.txt', 'output_sentences.txt').
+
+
+
+
+
+
+
+
+% Задание 4
+
+% Комбинаторные объекты: 
+
+% Перестановки
+permutation(List, OutputFile) :-
+    open(OutputFile, write, Stream),
+    findall(Perm, perm(List, Perm), Perms),
+    write(Stream, Perms), nl(Stream),
+    close(Stream).
+
+perm([], []).
+perm(List, [H|Perm]) :-
+    select(H, List, Rest),
+    perm(Rest, Perm).
+% Пример ввода
+% permutation([1, 2, 3], 'permutations.txt').
+
+% Подмножества
+subsets(List, OutputFile) :-
+    open(OutputFile, write, Stream),
+    findall(Subset, subset(List, Subset), Subsets),
+    write(Stream, Subsets), nl(Stream),
+    close(Stream).
+
+subset([], []).
+subset([H|T], [H|Sub]) :-
+    subset(T, Sub).
+subset([_|T], Sub) :-
+    subset(T, Sub).
+% Пример ввода
+% subsets([1, 2, 3], 'subsets.txt').
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% Слова длины 6, содержащие 3 буквы b.
+
+build_words([], []).
+build_words([H|T], Word) :-
+  build_words(T, Rest),
+  member(H, Word),
+  append([H], Rest, Word).
+
+
+
+
+
+
+
+
+
+
+
+% Слова длины 6, в которых ровно 2 буквы повторяются 2 раза,
+% остальные буквы не повторяются.
+
+
+
+
+
+
+
+
