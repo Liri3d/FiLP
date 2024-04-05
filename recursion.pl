@@ -432,7 +432,7 @@ pr_ein:- Containers=[_,_,_,_],
         next_to([_,limon],[jug,_],Containers),
         next_to([_,limon],[_,kvas],Containers),
         
-        % В банке - не лимонад и не вода
+        % В банке - не лимонад и не водаf
         (in_list(Containers,[jar,kvas]); in_list(Containers,[jar,milk])),
         
         % Стакан находится около банки и сосуда с молоком
@@ -446,3 +446,53 @@ pr_ein:- Containers=[_,_,_,_],
 		write(Containers).
 
 % pr_ein.
+
+% ЗАДАНИЕ 8
+% Вариант 4 Один из пяти братьев разбил окно.
+% Андрей сказал: Это или Витя, или Коля
+% Витя сказал: Это сделал не я и не Юра.
+% Дима сказал: Нет, один из них сказал правду, а другой неправду.
+% Юра сказал: Нет, Дима ты не прав.
+% Их отец, которому, конечно можно доверять, уверен, что не менее трех братьев
+% сказали правду. Кто разбил окно?
+       
+pr_ein1:- 
+        Brat=[_,_,_,_,_],
+        
+        % Юра врет
+        % Андрей сказал: Это или Витя, или Коля
+        (((in_list(Brat,[kolya,vinoven]); in_list(Brat,[vitya,vinoven])),
+        (in_list(Brat,[andrey,nevinoven]), in_list(Brat,[yura,nevinoven]), in_list(Brat,[dima,nevinoven]))),
+
+        % Витя сказал: Это сделал не я и не Юра
+        ((in_list(Brat,[yura,nevinoven]), in_list(Brat,[vitya,nevinoven])),
+        (in_list(Brat,[andrey,vinoven]); in_list(Brat,[kolya,vinoven]); in_list(Brat,[dima,vinoven]))),
+
+        % Дима сказал: Нет, один из них сказал правду, а другой неправду.
+        (((in_list(Brat,[kolya,vinoven]); in_list(Brat,[vitya,vinoven])),
+        (in_list(Brat,[andrey,nevinoven]), in_list(Brat,[yura,nevinoven]), in_list(Brat,[dima,nevinoven])));
+        ((in_list(Brat,[yura,vinoven]); in_list(Brat,[vitya,vinoven])),
+        (in_list(Brat,[andrey,vinoven]); in_list(Brat,[kolya,vinoven]); in_list(Brat,[dima,vinoven]))))),
+
+        % Дима врет
+        % Андрей сказал: Это или Витя, или Коля
+        (((in_list(Brat,[kolya,vinoven]); in_list(Brat,[vitya,vinoven])),
+        (in_list(Brat,[andrey,nevinoven]), in_list(Brat,[yura,nevinoven]), in_list(Brat,[dima,nevinoven]))),
+
+        % Витя сказал: Это сделал не я и не Юра
+        ((in_list(Brat,[yura,nevinoven]), in_list(Brat,[vitya,nevinoven])),
+        (in_list(Brat,[andrey,vinoven]); in_list(Brat,[kolya,vinoven]); in_list(Brat,[dima,vinoven])))),
+
+        % Витя врет
+        % Андрей сказал: Это или Витя, или Коля
+        ((in_list(Brat,[kolya,vinoven]); in_list(Brat,[vitya,vinoven])),
+        (in_list(Brat,[andrey,nevinoven]), in_list(Brat,[yura,nevinoven]), in_list(Brat,[dima,nevinoven]))),
+
+        % Андрей врет
+        % Витя сказал: Это сделал не я и не Юра
+        ((in_list(Brat,[yura,nevinoven]), in_list(Brat,[vitya,nevinoven])),
+        (in_list(Brat,[andrey,vinoven]); in_list(Brat,[kolya,vinoven]); in_list(Brat,[dima,vinoven]))),
+
+        write(Brat).
+
+% pr_ein1.
