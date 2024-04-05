@@ -397,8 +397,6 @@ local_maximum(Num, [H1, H2|T]) :-
 
 % local_maximums_count([1, 2, 3, 2, 1], Count).
 
-
-
 % Задание 4 
 % Вариант № 4. В бутылке, стакане, кувшине и банке находятся молоко, лимонад, квас
 % и вода. Известно, что вода и молоко не в бутылке, сосуд с лимонадом находится между
@@ -446,6 +444,155 @@ pr_ein:- Containers=[_,_,_,_],
 		write(Containers).
 
 % pr_ein.
+
+% ЗАДАНИЕ 5
+% Вариант № 4 Найти количество четных чисел, не взаимно простых с данным
+% находит наибольший общий делитель
+coprime(X, Y) :-
+    gcd(X, Y, 1).
+
+gcd(X, Y, Result) :-
+    X =:= Y,
+    Result is X.
+gcd(X, Y, Result) :-
+    X < Y,
+    Y1 is Y - X,
+    gcd(X, Y1, Result).
+gcd(X, Y, Result) :-
+    X > Y,
+    gcd(Y, X, Result1),
+    Result is Result1.
+
+% Находит все числа, которые не являются взаимно простыми с N
+    not_coprime_numbers(N, Numbers) :-
+        N < 2, !,
+        Numbers = [].
+    not_coprime_numbers(2, []) :- !.
+    not_coprime_numbers(N, Numbers) :-
+        N > 2,
+        not_coprime_numbers(N, 2, Numbers).
+    not_coprime_numbers(N, N, []) :- !.
+    
+    not_coprime_numbers(N, I, [I | Numbers]) :-
+        I < N,
+        \+ coprime(I, N),
+        I1 is I + 1,
+        not_coprime_numbers(N, I1, Numbers).
+    not_coprime_numbers(N, I, Numbers) :-
+        I < N,
+        not_coprime_numbers(N, I + 1, Numbers).
+    not_coprime_numbers(_, N, []).
+
+% НАходит количество четных чисел в списке
+count_even([], 0).
+count_even([Head|Tail], Count) :-
+    0 is Head mod 2,
+    count_even(Tail, Rest),
+    Count is Rest + 1.
+count_even([Head|Tail], Count) :-
+    1 is Head mod 2,
+    count_even(Tail, Count).
+
+not_coprime_count_even(N, Count) :-
+    not_coprime_numbers(N, Numbers),
+    count_even(Numbers, Count).
+
+% not_coprime_count_even(10, Count).
+
+% Найти произведение максимального числа, не взаимно простого с данным, не
+% делящегося на наименьший делитель исходно числа, и суммы цифр числа, меньших 5
+multiply_max_element(N, Result) :-
+    % Находит все числа, которые не являются взаимно простыми с N
+    not_coprime_numbers(N, Numbers),
+    % Поиск наименьшего делителя
+	smallest_divisor(N, Divisor),
+    % Удаляем из списка элементы сумма цифр которых > 5
+	remove_elements_with_sum_greater_than_five(Numbers, ListNo5),
+    % удалить из списка элементы которые делятся на Divisor
+    remove_elements_divisible_by_number(ListNo5, Divisor, ListNoDivisor),
+    % Поиск максимума в списке
+    find_max_element(ListNoDivisor, Max),
+    %Найти произведение цифр числа
+    product_numbers(Max, Result).
+
+% multiply_max_element(6, Result).
+
+% Поиск максимума в списке
+find_max_element([X], X).
+find_max_element([Head|Tail], Max) :-
+    find_max_element(Tail, TempMax),
+    (Head > TempMax -> Max = Head ; Max = TempMax).
+
+% удалить из списка элементы которые делятся на Divisor
+remove_elements_divisible_by_number([], _, []).
+
+remove_elements_divisible_by_number([Head|Tail], Number, Result) :-
+    Divisible is Head mod Number,
+    Divisible =\= 0,
+    remove_elements_divisible_by_number(Tail, Number, TempResult),
+    Result = [Head|TempResult].
+
+remove_elements_divisible_by_number([_|Tail], Number, Result) :-
+    remove_elements_divisible_by_number(Tail, Number, Result).
+
+% Поиск наименьшего делителя
+smallest_divisor(N, Divisor) :-
+    N > 1,
+    smallest_divisor(N, 2, Divisor).
+
+smallest_divisor(N, Divisor, Divisor) :-
+    0 is N mod Divisor.
+
+smallest_divisor(N, Divisor, Result) :-
+    Divisor < N,
+    NextDivisor is Divisor + 1,
+    smallest_divisor(N, NextDivisor, Result).
+
+% Удаляем из списка элементы сумма цифр которых > 5
+remove_elements_with_sum_greater_than_five([], []).
+remove_elements_with_sum_greater_than_five([Head|Tail], Result) :-
+    sum_of_digits_less_than_five(Head),
+    remove_elements_with_sum_greater_than_five(Tail, TempResult),
+    Result = [Head|TempResult].
+remove_elements_with_sum_greater_than_five([_|Tail], Result) :-
+    remove_elements_with_sum_greater_than_five(Tail, Result).
+
+% remove_elements_with_sum_greater_than_five([12, 345, 67, 89, 1234], Result).
+
+% Сумма цифр < 5?
+sum_of_digits_less_than_five(Number) :-
+    sum_of_digits_less_than_five(Number, 0).
+
+sum_of_digits_less_than_five(0, Sum) :-
+    Sum < 5.
+
+sum_of_digits_less_than_five(Number, Sum) :-
+    Number > 0,
+    Digit is Number mod 10,
+    NewSum is Sum + Digit,
+    NewNumber is Number div 10,
+    sum_of_digits_less_than_five(NewNumber, NewSum).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 % ЗАДАНИЕ 8
 % Вариант 4 Один из пяти братьев разбил окно.
