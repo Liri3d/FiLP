@@ -447,21 +447,6 @@ pr_ein:- Containers=[_,_,_,_],
 
 % ЗАДАНИЕ 5
 % Вариант № 4 Найти количество четных чисел, не взаимно простых с данным
-% находит наибольший общий делитель
-coprime(X, Y) :-
-    gcd(X, Y, 1).
-
-gcd(X, Y, Result) :-
-    X =:= Y,
-    Result is X.
-gcd(X, Y, Result) :-
-    X < Y,
-    Y1 is Y - X,
-    gcd(X, Y1, Result).
-gcd(X, Y, Result) :-
-    X > Y,
-    gcd(Y, X, Result1),
-    Result is Result1.
 
 % Находит все числа, которые не являются взаимно простыми с N
     not_coprime_numbers(N, Numbers) :-
@@ -496,6 +481,22 @@ count_even([Head|Tail], Count) :-
 not_coprime_count_even(N, Count) :-
     not_coprime_numbers(N, Numbers),
     count_even(Numbers, Count).
+
+% находит наибольший общий делитель
+coprime(X, Y) :-
+    gcd(X, Y, 1).
+
+gcd(X, Y, Result) :-
+    X =:= Y,
+    Result is X.
+gcd(X, Y, Result) :-
+    X < Y,
+    Y1 is Y - X,
+    gcd(X, Y1, Result).
+gcd(X, Y, Result) :-
+    X > Y,
+    gcd(Y, X, Result1),
+    Result is Result1.
 
 % not_coprime_count_even(10, Count).
 
@@ -578,6 +579,168 @@ sum_of_digits_less_than_five(Number, Sum) :-
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% ЗАДАНИЕ 6
+% Вариант 4
+% Эйлер выяснил, что многочлен n2+n+41 порождает простые числа для всех n=0..39. Среди
+% произвольных многочленов с целыми коэффициентами n2+an+b, где коэффициенты по
+% модулю меньше 1000 найти такой многочлен, который будет порождать максимальное
+% количество простых чисел, начиная с n=0. Вывести произведение его коэффициентов.
+% Задача должна быть решена без использования списков.
+solve_task :-
+    findall(Count-A-B, (between(0, 999, A), between(0, 999, B), count_primes(A, B, Count)), Results),
+    max_member(Count-A-B, Results),
+    write('Коэффициенты: '), write(A), write(' * '), write(B), nl,
+    write('Произведение коэффициентов: '), write(A*B), nl.
+
+% Проверка простое ли число
+is_prime(N) :-
+    N > 1,
+    \+ has_factor(N, 2).
+
+% ВсПроверка есть ли жедитель наличия делителя
+has_factor(N, D) :-
+    N mod D =:= 0.
+
+% Генерация многочлена 
+generate_polynomial(A, B, N, Polynomial) :-
+    Polynomial is A*N*N + A*N + B.
+
+% Кол-во простых чисел которые генерирует многочлен
+count_primes(A, B, Count) :-
+    count_primes_helper(A, B, 0, 39, 0, Count).
+
+count_primes_helper(_, _, N, MaxN, Count, Count) :- % Если N превышает MaxN, то рекурсия завершается
+    N > MaxN.
+
+count_primes_helper(A, B, N, MaxN, Acc, Count) :- %  Если N не превышает MaxN
+    N =< MaxN,
+    generate_polynomial(A, B, N, Polynomial), % Генерируется многочлен
+    (Polynomial > 0, is_prime(Polynomial) -> NewAcc is Acc + 1 ; NewAcc = Acc), % Является ли многочлен положительным и простым. Если истина, то NewAcc + 1
+    NextN is N + 1, 
+    count_primes_helper(A, B, NextN, MaxN, NewAcc, Count). % Вызывается рекурсивно count_primes_helper с обновленными значениями NextN и NewAcc
+
+
+
+% ЗАДАНИЕ 7
+
+% 1 Дан целочисленный массив. Необходимо найти минимальный четный элемент.
+% min_even_element(+Array, ?MinEven)
+min_even_element(Array, MinEven) :-
+    get_even_elements(Array, EvenElements),
+    min_list(EvenElements, MinEven).
+
+% get_even_elements(+[Head|Tail], ?[Head|EvenTail])
+get_even_elements([], []).
+get_even_elements([Head|Tail], [Head|EvenTail]) :-
+    0 is Head mod 2,
+    get_even_elements(Tail, EvenTail).
+get_even_elements([_|Tail], EvenTail) :-
+    get_even_elements(Tail, EvenTail).
+
+% min_even_element([3, 7, 2, 9, 4, 6, 5], MinEven).
+
+% 1 Дан массив чисел. Необходимо проверить, чередуются ли в нем целые и
+% вещественные числа.
+% alternating_numbers(+List). 
+alternating_numbers(List) :-
+    check_alternating(List, integer).
+
+% check_alternating(+[], -_).
+check_alternating([], _).
+check_alternating([X], _).
+check_alternating([X,Y|Tail], Type) :-
+    (number(X), call(Type, X)),
+    (number(Y), \+ call(Type, Y)),
+    check_alternating(Tail, Type).
+
+% alternating_numbers([1, 2.5, 3, 4.7, 5]).
+
+% 1.51. Для введенного списка построить два списка L1 и L2, где элементы L1 это
+% неповторяющиеся элементы исходного списка, а элемент списка L2 с номером i показывает,
+% сколько раз элемент списка L1 с таким номером повторяется в исходном.
+
+two_lists(List, ListNoRepeat, Result) :-
+    % Список элементов без повторений
+    remove_duplicates(List, ListNoRepeat),
+    % Количество элементов в исходном списке
+    generate_count_list(List, ListNoRepeat, ListWithCount),
+    % Удаляет элементы, оставляет количество
+    remove_first_values(ListWithCount, Result).
+
+% two_lists([1,2,3,2,1], ListNoRepeat, Result).
+
+% Список элементов без повторений
+remove_duplicates([], []).
+remove_duplicates([Head | Tail], Result) :-
+    member(Head, Tail),
+    remove_duplicates(Tail, Result).
+remove_duplicates([Head | Tail], [Head | Result]) :-
+    \+ member(Head, Tail),
+    remove_duplicates(Tail, Result).
+
+% Удаляет элементы, оставляет количество
+remove_first_values(Pairs, Result) :-
+    maplist(remove_first_value, Pairs, Result).
+
+remove_first_value([_, Second], [Second]).
+
+maplist(_, [], []).
+maplist(Pred, [X|Xs], [Y|Ys]) :-
+    call(Pred, X, Y),
+    maplist(Pred, Xs, Ys).
+
+% remove_first_values([[3, 1], [2, 2], [4, 1], [1, 2], [5, 1]], Result).
+
+% Количество элементов в исходном списке
+generate_count_list(_, [], []).
+generate_count_list(Original, [X | Unique], [[X, Num] | Result]) :-
+    count_occurrences(X, Original, Num),
+    generate_count_list(Original, Unique, Result).
+
+count_occurrences(_, [], 0).
+count_occurrences(X, [X | Tail], N) :-
+    count_occurrences(X, Tail, M),
+    N is M + 1.
+count_occurrences(X, [Y | Tail], N) :-
+    X \= Y,
+    count_occurrences(X, Tail, N).
 
 
 
