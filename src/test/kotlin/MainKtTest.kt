@@ -99,4 +99,48 @@ internal class MainKtTest {
         val expected = 6
         assertEquals(expected, main.countDivisors(12))
     }
+
+// Задание 5 -------------------------------------------
+
+    @Test
+    fun productup() {
+        val main = Main()
+        val expected = 30
+        assertEquals(expected, main.product(3512))
+    }
+
+    @Test
+    fun productdown() {
+        val main = Main()
+        val expected = 30
+        assertEquals(expected, main.product(3512))
+    }
+
+    @Test
+    fun maxDigup() {
+        val main = Main()
+        val expected = 5
+        assertEquals(expected, main.maxDig(35612))
+    }
+
+    @Test
+    fun maxDigdown() {
+        val main = Main()
+        val expected = 5
+        assertEquals(expected, main.maxDig(35612))
+    }
+
+    @Test
+    fun countDivisorsup() {
+        val main = Main()
+        val expected = 6
+        assertEquals(expected, main.countDivisors(12))
+    }
+
+    @Test
+    fun countDivisorsdown() {
+        val main = Main()
+        val expected = 6
+        assertEquals(expected, main.countDivisors(12))
+    }
 }
