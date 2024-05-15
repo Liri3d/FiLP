@@ -174,6 +174,72 @@ class Main {
 
 
 
+
+
+// Задание 7 Вариант 4
+// Выделить и вызывать функции высших порядков с соответствующими аргументами.
+// Включить функции, решающие предложенные задачи в программу из задания 5.
+// Построить тесты указанных функций.
+
+    //НОД 2 чисел рекурсией вверх
+    fun nod(a:Int, b:Int):Int = if(b == 0) a else nod(b,a % b)
+
+// Найти количество четных чисел, не взаимно простых с данным
+    fun countOfEvenNumber(n: Int):Int {
+        var count = 0
+        for (i in 2 until n step 2) {
+            if (nod(n, i) != 1) {
+                count++
+            }
+        }
+        return count
+    }
+
+    // Выделим функцию высшего порядка
+    fun isNonCoprime(n: Int): (Int) -> Boolean {
+        return { x -> nod(n, x) != 1 }
+    }
+
+    fun countOfEvenNumbers(n: Int): Int {
+        val evenNumbers = (2..n step 2).filter(isNonCoprime(n))
+        return evenNumbers.size
+    }
+
+// Найти произведение максимального числа, не взаимно простого с данным, не
+// делящегося на наименьший делитель исходно числа, и суммы цифр числа, меньших 5
+
+    // Наименьший делитель исходно числа
+    fun smallestDivisor(n: Int): Int {
+        if (n < 2) return n
+        for (i in 2..n) {
+            if (n % i == 0) {
+                return i
+            }
+        }
+        return n
+    }
+
+    // Макс. число, не взаимно простое с данным, делящееся на наименьший делитель исходно числа
+    fun maxNonCoprimeNotDivisibleBySmallestDivisor(n: Int): Int {
+        val nonCoprimeNumbers = (2 until n).filter(isNonCoprime(n))
+        val smallestDivisor = smallestDivisor(n)
+        val filteredNumbers = nonCoprimeNumbers.filter { it % smallestDivisor != 0 }
+        return filteredNumbers.maxOrNull() ?: 0
+    }
+
+    // Сумма цифр числа, меньших 5
+    fun sumOfDigitsLessThanFive(n: Int): Int {
+        return n.toString().map { it.toString().toInt() }.filter { it < 5 }.sum()
+    }
+
+    // Произведение
+    fun ProductMaxSum(n:Int):Int = maxNonCoprimeNotDivisibleBySmallestDivisor(n) * sumOfDigitsLessThanFive(n)
+
+
+
+
+
+
     fun main() {
 
 //        println("Задание 1 ------------------------------------------")
@@ -190,45 +256,43 @@ class Main {
 //        println("Мин цифра (234): ${mind(234)}\n")
 //
 //        println("Задание 2 ------------------------------------------")
-//        print("Произведение (1223): ${product(1223)}\n")
-//        print("Макс не делится на 3 (4563): ${maxDig(4563)}\n")
-//        print("Кол-во делителей (12): ${countDivisors(12)}\n\n")
+//        println("Произведение (1223): ${product(1223)}\n")
+//        println("Макс не делится на 3 (4563): ${maxDig(4563)}\n")
+//        println("Кол-во делителей (12): ${countDivisors(12)}\n\n")
 //
 //        println("Задание 3 ------------------------------------------")
-//        print("Произведение рек. вверх (1223): ${productup(1223)}\n")
-//        print("Произведение рек. вниз (1223): ${productdown(1223)}\n")
-//        print("Макс не делится на 3 рек. вверх (463): ${maxDigup(463)}\n")
-//        print("Макс не делится на 3 рек. вниз (463): ${maxDigdown(463)}\n")
-//        print("Кол-во делителей рек. вверх (12): ${countDivisorsup(12)}\n")
-//        print("Кол-во делителей рек. вниз (12): ${countDivisorsdown(12)}\n\n")
+//        println("Произведение рек. вверх (1223): ${productup(1223)}\n")
+//        println("Произведение рек. вниз (1223): ${productdown(1223)}\n")
+//        println("Макс не делится на 3 рек. вверх (463): ${maxDigup(463)}\n")
+//        println("Макс не делится на 3 рек. вниз (463): ${maxDigdown(463)}\n")
+//        println("Кол-во делителей рек. вверх (12): ${countDivisorsup(12)}\n")
+//        println("Кол-во делителей рек. вниз (12): ${countDivisorsdown(12)}\n\n")
 //
 //        println("Задание 4 ------------------------------------------")
-//        print("Произведение рек. вверх (1223): ${hOrderFunc(1223,::productup)}\n")
-//        print("Произведение рек. вниз (1223): ${hOrderFunc(1223,::productdown)}\n")
-//        print("Макс не делится на 3 рек. вверх (463): ${hOrderFunc(463,::maxDigup)}\n")
-//        print("Макс не делится на 3 рек. вниз (463): ${hOrderFunc(463,::maxDigdown)}\n")
-//        print("Кол-во делителей рек. вверх (12): ${hOrderFunc(12,::countDivisorsup)}\n")
-//        print("Кол-во делителей рек. вниз (12): ${hOrderFunc(12,::countDivisorsdown)}\n\n")
+//        println("Произведение рек. вверх (1223): ${hOrderFunc(1223,::productup)}\n")
+//        println("Произведение рек. вниз (1223): ${hOrderFunc(1223,::productdown)}\n")
+//        println("Макс не делится на 3 рек. вверх (463): ${hOrderFunc(463,::maxDigup)}\n")
+//        println("Макс не делится на 3 рек. вниз (463): ${hOrderFunc(463,::maxDigdown)}\n")
+//        println("Кол-во делителей рек. вверх (12): ${hOrderFunc(12,::countDivisorsup)}\n")
+//        println("Кол-во делителей рек. вниз (12): ${hOrderFunc(12,::countDivisorsdown)}\n\n")
 
-        println("Задание 4 ------------------------------------------")
-
-        // Пример использования функции getFunctionByName
-//        println("Функции: product(up/down), maxDig(up/down), countDivisors(up/down)")
-//        println("Введите наименование функции: ")
+//        println("Задание 6 ------------------------------------------")
+//        println("Введите путь к файлу: ")
 //        val scanner = Scanner(`in`)
-//        val functionName = scanner.nextLine()
-//        val function = getFunctionByName(functionName)
-//        if (function != null) {
-//            val result = function(12345)
-//            println("Результат выполнения функции $functionName: $result")
-//        } else {
-//            println("Функция $functionName не найдена")
-//        }
+//        val filePath = scanner.nextLine()
+//        processFile(filePath)
 
-        println("Введите путь к файлу: ")
-        val scanner = Scanner(`in`)
-        val filePath = scanner.nextLine()
-        processFile(filePath)
+        println("Задание 7 ------------------------------------------")
+
+        println("Кол-во четных чисел, не взаимно простых с 6: ${countOfEvenNumbers(6)}")
+        println("Вызов функции высшего порядка: ${countOfEvenNumbers(6)}\n")
+
+        println("Произведение (132): ${ProductMaxSum(132)}")
+        println("Макс. число, не взаимно простое с данным, делящееся на наименьший делитель исходно числа:  ${maxNonCoprimeNotDivisibleBySmallestDivisor(132)}")
+        println("Сумма цифр числа, меньших 5:  ${sumOfDigitsLessThanFive(132)}")
+
+
+
     }
 }
 

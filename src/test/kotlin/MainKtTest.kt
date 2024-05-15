@@ -143,4 +143,35 @@ internal class MainKtTest {
         val expected = 6
         assertEquals(expected, main.countDivisors(12))
     }
+
+// Задание 7 -------------------------------------------
+
+    @Test
+    fun nod() {
+        val main = Main()
+        val expected = 2
+        assertEquals(expected, main.nod(6, 2))
+    }
+
+    @Test
+    fun countOfEvenNumber() {
+        val main = Main()
+        val expected = 2
+        assertEquals(expected, main.countOfEvenNumber(6))
+    }
+
+    @Test
+    fun countOfEvenNumbers() {
+        val main = Main()
+        val expected = 3
+        assertEquals(expected, main.countOfEvenNumbers(6))
+    }
+
+    @Test
+    fun ProductMaxSum() {
+        val main = Main()
+        val expected = 92
+        assertEquals(expected, main.ProductMaxSum(46))
+    }
+
 }
