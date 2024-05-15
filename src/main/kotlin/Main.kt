@@ -3,22 +3,22 @@ import java.util.*
 
 class Main {
 
-// Реализовать функцию с телом выражение max(X,Y,Z), находящую максимальное из чисел X, Y и Z.
+    // Реализовать функцию с телом выражение max(X,Y,Z), находящую максимальное из чисел X, Y и Z.
     fun max(x: Int, y: Int, z: Int): Int = if (x > y) if (x > z) x else z else if (y > z) y else z
 
-// Реализовать функцию fact(N), с помощью рекурсии вверх, рекурсии вниз.
+    // Реализовать функцию fact(N), с помощью рекурсии вверх, рекурсии вниз.
     fun factup(n: Int): Int = if (n <= 1) 1 else factup(n - 1) * n
 
     tailrec fun factd(n: Int, a: Int): Int = if (n <= 1) n * a else factd(n - 1, n * a)
     fun factdown(n: Int): Int = factd(n, 1)
 
-// Найти сумму цифр числа с помощью рекурсии вверх/вниз.
+    // Найти сумму цифр числа с помощью рекурсии вверх/вниз.
     fun sumc(n: Int): Int = if (n <= 10) n else (n % 10) + (sumc(n / 10))
 
     fun sumcda(n: Int, a: Int): Int = if (n < 10) n + a else sumcda(n / 10, a + (n % 10))
     fun sumcd(n: Int): Int = sumcda(n, 0)
 
-// Написать функцию, которая принимает один аргумент и возвращает функцию.
+    // Написать функцию, которая принимает один аргумент и возвращает функцию.
 // Аргумент, тип логический, если он ИСТИНА, возвращаем функцию, считающую сумму цифр числа, если он ЛОЖЬ, возвращаем функцию, считающую факториал числа.
 // Проверить эту функцию на нескольких примерах.
     fun calculate(f: Boolean): (Int) -> Int = if (f) ::sumc else ::factup
@@ -35,6 +35,56 @@ class Main {
     fun maxd(n: Int): Int = digits(n / 10, n % 10) { a, b -> if (a > b) a else b }
     fun mind(n: Int): Int = digits(n / 10, n % 10) { a, b -> if (a < b) a else b }
 
+
+
+
+
+
+
+
+
+
+
+// Задание 2 Вариант № 4
+
+//    Построить 3 чистые функции, решающих следующие 3 задачи с помощью циклов. Протестировать работу этих функций.
+
+    //    Найти произведение цифр числа.
+    fun product(n:Int):Int {
+        var product = 1
+        var num = n
+        while (num != 0){
+            product *= num % 10
+            num /= 10
+        }
+        return product
+    }
+
+    //    Найти максимальную цифры числа, не делящуюся на 3
+    fun maxDig(n: Int): Int {
+        var max = -1
+        var num = n
+        while (num != 0) {
+            val digit = num % 10
+            if (digit > max && digit % 3 != 0) {
+                max = digit
+            }
+            num /= 10
+        }
+        return max
+    }
+
+    //    Найти количество делителей числа
+    fun countDivisors(n: Int): Int {
+        var count = 0
+        for (i in 1..n) {
+            if (n % i == 0) {
+                count++
+            }
+        }
+        return count
+    }
+
     fun main() {
         println("Задание 1 ------------------------------------------")
         println("Максимальное число (1,3,2): ${max(1, 3, 2)}")
@@ -48,6 +98,10 @@ class Main {
         println("Произведение цифр (234): ${muld(234)}")
         println("Макс цифра (234): ${maxd(234)}")
         println("Мин цифра (234): ${mind(234)}")
+        println("Задание 2 ------------------------------------------")
+        print("Произведение (1223): ${product(1223)}")
+        print("\nМакс не делится на 3 (4563): ${maxDig(4563)}")
+        print("\nКол-во делителей (12): ${countDivisors(12)}")
     }
 }
 
