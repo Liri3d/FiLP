@@ -1,0 +1,4 @@
+3512 product
+35612 maxDig
+35612 maxDigit
+12 countDivisors

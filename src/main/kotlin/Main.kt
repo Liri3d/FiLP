@@ -1,5 +1,7 @@
 import java.lang.System.`in`
+import java.io.File
 import java.util.*
+
 
 class Main {
 
@@ -120,45 +122,113 @@ class Main {
 
 
 
-
-
 // Задание 5 ТЕСТЫ
+
+
+
+// Задание 6
+
+    fun getFunctionByName(functionName: String): ((Int) -> Int)? {
+        val functions = mapOf(
+            "product" to ::product,
+            "maxDig" to ::maxDig,
+            "countDivisors" to ::countDivisors,
+            "productup" to ::productup,
+            "maxDigup" to ::maxDigup,
+            "countDivisorsup" to ::countDivisorsup,
+            "productdown" to ::productdown,
+            "maxDigdown" to ::maxDigdown,
+            "countDivisorsdown" to ::countDivisorsdown
+        )
+        return functions[functionName]
+    }
+
+    fun processFile(filePath: String) {
+        val inputFile = File(filePath)
+        val outputFile = File("C:\\Users\\Administrator\\Documents\\FPLab5Example-master\\output.txt")
+        if (!inputFile.exists()) {
+            println("Файл $filePath не найден.")
+            return
+        }
+        val lines = inputFile.readLines()
+        val results = mutableListOf<String>()
+        for (line in lines) {
+            val parts = line.split(" ")
+            if (parts.size != 2) {
+                results.add("Ошибка структуры строки: $line")
+                continue
+            }
+            val number = parts[0].toInt()
+            val functionName = parts[1]
+            val function = getFunctionByName(functionName)
+            if (function != null) {
+                val result = function(number)
+                results.add("$number $functionName $result")
+            } else {
+                results.add("Функция $functionName не найдена")
+            }
+        }
+        outputFile.writeText(results.joinToString("\n"))
+        println("Результаты сохранены в файл $outputFile")
+    }
+
+
 
     fun main() {
 
-        println("Задание 1 ------------------------------------------")
-        println("Максимальное число (1,3,2): ${max(1, 3, 2)}")
-        println("Факториал 3, рек.вверх: ${factup(3)}")
-        println("Факториал 3, рек.вниз: ${factdown(3)}")
-        println("Сумма цифр 1234 рек.вверх: ${sumc(1234)}")
-        println("Сумма цифр 1234 рек.вниз: ${sumcd(1234)}")
-        println("Если T -> sumc(11): ${calculate(true)(11)}")
-        println("Если F -> factup(11): ${calculate(false)(11)}")
-        println("Сумма цифр (234): ${sumd(234)}")
-        println("Произведение цифр (234): ${muld(234)}")
-        println("Макс цифра (234): ${maxd(234)}")
-        println("Мин цифра (234): ${mind(234)}\n")
-
-        println("Задание 2 ------------------------------------------")
-        print("Произведение (1223): ${product(1223)}\n")
-        print("Макс не делится на 3 (4563): ${maxDig(4563)}\n")
-        print("Кол-во делителей (12): ${countDivisors(12)}\n\n")
-
-        println("Задание 3 ------------------------------------------")
-        print("Произведение рек. вверх (1223): ${productup(1223)}\n")
-        print("Произведение рек. вниз (1223): ${productdown(1223)}\n")
-        print("Макс не делится на 3 рек. вверх (463): ${maxDigup(463)}\n")
-        print("Макс не делится на 3 рек. вниз (463): ${maxDigdown(463)}\n")
-        print("Кол-во делителей рек. вверх (12): ${countDivisorsup(12)}\n")
-        print("Кол-во делителей рек. вниз (12): ${countDivisorsdown(12)}\n\n")
+//        println("Задание 1 ------------------------------------------")
+//        println("Максимальное число (1,3,2): ${max(1, 3, 2)}")
+//        println("Факториал 3, рек.вверх: ${factup(3)}")
+//        println("Факториал 3, рек.вниз: ${factdown(3)}")
+//        println("Сумма цифр 1234 рек.вверх: ${sumc(1234)}")
+//        println("Сумма цифр 1234 рек.вниз: ${sumcd(1234)}")
+//        println("Если T -> sumc(11): ${calculate(true)(11)}")
+//        println("Если F -> factup(11): ${calculate(false)(11)}")
+//        println("Сумма цифр (234): ${sumd(234)}")
+//        println("Произведение цифр (234): ${muld(234)}")
+//        println("Макс цифра (234): ${maxd(234)}")
+//        println("Мин цифра (234): ${mind(234)}\n")
+//
+//        println("Задание 2 ------------------------------------------")
+//        print("Произведение (1223): ${product(1223)}\n")
+//        print("Макс не делится на 3 (4563): ${maxDig(4563)}\n")
+//        print("Кол-во делителей (12): ${countDivisors(12)}\n\n")
+//
+//        println("Задание 3 ------------------------------------------")
+//        print("Произведение рек. вверх (1223): ${productup(1223)}\n")
+//        print("Произведение рек. вниз (1223): ${productdown(1223)}\n")
+//        print("Макс не делится на 3 рек. вверх (463): ${maxDigup(463)}\n")
+//        print("Макс не делится на 3 рек. вниз (463): ${maxDigdown(463)}\n")
+//        print("Кол-во делителей рек. вверх (12): ${countDivisorsup(12)}\n")
+//        print("Кол-во делителей рек. вниз (12): ${countDivisorsdown(12)}\n\n")
+//
+//        println("Задание 4 ------------------------------------------")
+//        print("Произведение рек. вверх (1223): ${hOrderFunc(1223,::productup)}\n")
+//        print("Произведение рек. вниз (1223): ${hOrderFunc(1223,::productdown)}\n")
+//        print("Макс не делится на 3 рек. вверх (463): ${hOrderFunc(463,::maxDigup)}\n")
+//        print("Макс не делится на 3 рек. вниз (463): ${hOrderFunc(463,::maxDigdown)}\n")
+//        print("Кол-во делителей рек. вверх (12): ${hOrderFunc(12,::countDivisorsup)}\n")
+//        print("Кол-во делителей рек. вниз (12): ${hOrderFunc(12,::countDivisorsdown)}\n\n")
 
         println("Задание 4 ------------------------------------------")
-        print("Произведение рек. вверх (1223): ${hOrderFunc(1223,::productup)}\n")
-        print("Произведение рек. вниз (1223): ${hOrderFunc(1223,::productdown)}\n")
-        print("Макс не делится на 3 рек. вверх (463): ${hOrderFunc(463,::maxDigup)}\n")
-        print("Макс не делится на 3 рек. вниз (463): ${hOrderFunc(463,::maxDigdown)}\n")
-        print("Кол-во делителей рек. вверх (12): ${hOrderFunc(12,::countDivisorsup)}\n")
-        print("Кол-во делителей рек. вниз (12): ${hOrderFunc(12,::countDivisorsdown)}\n")
+
+        // Пример использования функции getFunctionByName
+//        println("Функции: product(up/down), maxDig(up/down), countDivisors(up/down)")
+//        println("Введите наименование функции: ")
+//        val scanner = Scanner(`in`)
+//        val functionName = scanner.nextLine()
+//        val function = getFunctionByName(functionName)
+//        if (function != null) {
+//            val result = function(12345)
+//            println("Результат выполнения функции $functionName: $result")
+//        } else {
+//            println("Функция $functionName не найдена")
+//        }
+
+        println("Введите путь к файлу: ")
+        val scanner = Scanner(`in`)
+        val filePath = scanner.nextLine()
+        processFile(filePath)
     }
 }
 

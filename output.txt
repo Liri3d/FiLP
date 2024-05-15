@@ -1,0 +1,4 @@
+3512 product 30
+35612 maxDig 5
+Функция maxDigit не найдена
+12 countDivisors 6
