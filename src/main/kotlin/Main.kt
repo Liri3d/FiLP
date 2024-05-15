@@ -110,6 +110,14 @@ class Main {
     fun countDivisorsdown(n: Int): Int = countDivisorsd(n, 1, 0)
     tailrec fun countDivisorsd(n: Int, a: Int, count: Int): Int = if (a > n) count else countDivisorsd(n, a + 1, if (n % a == 0) count + 1 else count)
 
+
+
+
+
+// Задание 4
+    //Функция высшего порядка
+    fun hOrderFunc(a:Int, f:(Int) -> Int):Int = f(a)
+
     fun main() {
 
         println("Задание 1 ------------------------------------------")
@@ -136,7 +144,15 @@ class Main {
         print("Макс не делится на 3 рек. вверх (463): ${maxDigup(463)}\n")
         print("Макс не делится на 3 рек. вниз (463): ${maxDigdown(463)}\n")
         print("Кол-во делителей рек. вверх (12): ${countDivisorsup(12)}\n")
-        print("Кол-во делителей рек. вниз (12): ${countDivisorsdown(12)}\n")
+        print("Кол-во делителей рек. вниз (12): ${countDivisorsdown(12)}\n\n")
+
+        println("Задание 4 ------------------------------------------")
+        print("Произведение рек. вверх (1223): ${hOrderFunc(1223,::productup)}\n")
+        print("Произведение рек. вниз (1223): ${hOrderFunc(1223,::productdown)}\n")
+        print("Макс не делится на 3 рек. вверх (463): ${hOrderFunc(463,::maxDigup)}\n")
+        print("Макс не делится на 3 рек. вниз (463): ${hOrderFunc(463,::maxDigdown)}\n")
+        print("Кол-во делителей рек. вверх (12): ${hOrderFunc(12,::countDivisorsup)}\n")
+        print("Кол-во делителей рек. вниз (12): ${hOrderFunc(12,::countDivisorsdown)}\n")
     }
 }
 
