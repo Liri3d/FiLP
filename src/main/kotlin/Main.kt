@@ -39,12 +39,6 @@ class Main {
 
 
 
-
-
-
-
-
-
 // Задание 2 Вариант № 4
 
 //    Построить 3 чистые функции, решающих следующие 3 задачи с помощью циклов. Протестировать работу этих функций.
@@ -85,7 +79,39 @@ class Main {
         return count
     }
 
+
+
+
+
+// Задание 3
+
+// Найти произведение цифр числа.
+    // Вверх
+    fun productup(n:Int):Int = if (n <= 10) n else (n % 10) * productup(n / 10)
+
+    // Вниз
+    fun productdown(n:Int):Int = productd(n, 1)
+    tailrec fun productd(n:Int, a:Int):Int = if (n <= 10) n * a else productd(n / 10, (n % 10) * a)
+
+// Найти максимальную цифры числа, не делящуюся на 3
+    // Вверх
+    fun maxDigup(n:Int):Int = if ((n < 10) && (n % 3 == 0)) -1 else if ((n % 10) % 3 == 0) maxDigup(n / 10) else maxOf(n % 10, maxDig(n / 10))
+
+    // Вниз
+    fun maxDigdown(n:Int):Int = maxDigd(n, -1)
+    tailrec fun maxDigd(n: Int, max:Int):Int = if ((n < 10) && (n % 3 == 0)) max else if ((n % 10) % 3 == 0) maxDigup(n / 10) else maxOf(n % 10, maxDig(n / 10))
+
+// Найти количество делителей числа
+    // Вверх
+    fun countDivisorsup(n:Int):Int = countDivisorsu(n, 1)
+    fun countDivisorsu(n:Int, a:Int):Int = if (a > n) 0 else (if (n % a == 0) 1 else 0) + countDivisorsu(n, a + 1)
+
+    // Вниз
+    fun countDivisorsdown(n: Int): Int = countDivisorsd(n, 1, 0)
+    tailrec fun countDivisorsd(n: Int, a: Int, count: Int): Int = if (a > n) count else countDivisorsd(n, a + 1, if (n % a == 0) count + 1 else count)
+
     fun main() {
+
         println("Задание 1 ------------------------------------------")
         println("Максимальное число (1,3,2): ${max(1, 3, 2)}")
         println("Факториал 3, рек.вверх: ${factup(3)}")
@@ -97,11 +123,20 @@ class Main {
         println("Сумма цифр (234): ${sumd(234)}")
         println("Произведение цифр (234): ${muld(234)}")
         println("Макс цифра (234): ${maxd(234)}")
-        println("Мин цифра (234): ${mind(234)}")
+        println("Мин цифра (234): ${mind(234)}\n")
+
         println("Задание 2 ------------------------------------------")
-        print("Произведение (1223): ${product(1223)}")
-        print("\nМакс не делится на 3 (4563): ${maxDig(4563)}")
-        print("\nКол-во делителей (12): ${countDivisors(12)}")
+        print("Произведение (1223): ${product(1223)}\n")
+        print("Макс не делится на 3 (4563): ${maxDig(4563)}\n")
+        print("Кол-во делителей (12): ${countDivisors(12)}\n\n")
+
+        println("Задание 3 ------------------------------------------")
+        print("Произведение рек. вверх (1223): ${productup(1223)}\n")
+        print("Произведение рек. вниз (1223): ${productdown(1223)}\n")
+        print("Макс не делится на 3 рек. вверх (463): ${maxDigup(463)}\n")
+        print("Макс не делится на 3 рек. вниз (463): ${maxDigdown(463)}\n")
+        print("Кол-во делителей рек. вверх (12): ${countDivisorsup(12)}\n")
+        print("Кол-во делителей рек. вниз (12): ${countDivisorsdown(12)}\n")
     }
 }
 
