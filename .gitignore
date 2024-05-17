@@ -27,3 +27,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/Main2/nbproject/private/
+/Main2/build/
+/lab6/nbproject/private/
+/lab6/build/

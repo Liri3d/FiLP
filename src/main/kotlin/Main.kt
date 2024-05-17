@@ -239,6 +239,70 @@ class Main {
 
 
 
+// Задание 8 Вариант 4
+//    Эйлер выяснил, что многочлен n2+n+41 порождает простые числа для всех n=0..39. Среди
+//    произвольных многочленов с целыми коэффициентами n2+an+b, где коэффициенты по
+//    модулю меньше 1000 найти такой многочлен, который будет порождать максимальное
+//    количество простых чисел, начиная с n=0. Вывести произведение его коэффициентов.
+//    Задача должна быть решена без использования списков.
+
+
+
+
+
+
+
+
+
+
+
+
+
+    fun solveTask() {
+        val results = mutableListOf<Triple<Int, Int, Int>>()
+        for (a in 0..999) {
+            for (b in 0..999) {
+                val count = countPrimes(a, b)
+                results.add(Triple(count, a, b))
+            }
+        }
+        val maxResult = results.maxByOrNull { it.first }
+        if (maxResult != null) {
+            val (count, a, b) = maxResult
+            println("Коэффициенты: $a * $b")
+            println("Произведение коэффициентов: ${a * b}")
+        }
+    }
+
+    fun isPrime(n: Int): Boolean {
+        if (n <= 1) return false
+        for (i in 2 until n) {
+            if (n % i == 0) {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun generatePolynomial(a: Int, b: Int, n: Int): Int {
+        return a * n * n + a * n + b
+    }
+
+    fun countPrimes(a: Int, b: Int): Int {
+        var count = 0
+        for (n in 0 until 40) {
+            val polynomial = generatePolynomial(a, b, n)
+            if (polynomial > 0 && isPrime(polynomial)) {
+                count++
+            }
+        }
+        return count
+    }
+
+
+
+
+
 
     fun main() {
 
@@ -281,16 +345,18 @@ class Main {
 //        val scanner = Scanner(`in`)
 //        val filePath = scanner.nextLine()
 //        processFile(filePath)
+//
+//        println("\nЗадание 7 ------------------------------------------")
+//
+//        println("Кол-во четных чисел, не взаимно простых с 6: ${countOfEvenNumbers(6)}")
+//        println("Вызов функции высшего порядка: ${countOfEvenNumbers(6)}")
+//
+//        println("Произведение (132): ${ProductMaxSum(132)}")
+//        println("Макс. число, не взаимно простое с данным, делящееся на наименьший делитель исходно числа:  ${maxNonCoprimeNotDivisibleBySmallestDivisor(132)}")
+//        println("Сумма цифр числа, меньших 5:  ${sumOfDigitsLessThanFive(132)}\n")
 
-        println("Задание 7 ------------------------------------------")
-
-        println("Кол-во четных чисел, не взаимно простых с 6: ${countOfEvenNumbers(6)}")
-        println("Вызов функции высшего порядка: ${countOfEvenNumbers(6)}\n")
-
-        println("Произведение (132): ${ProductMaxSum(132)}")
-        println("Макс. число, не взаимно простое с данным, делящееся на наименьший делитель исходно числа:  ${maxNonCoprimeNotDivisibleBySmallestDivisor(132)}")
-        println("Сумма цифр числа, меньших 5:  ${sumOfDigitsLessThanFive(132)}")
-
+        println("Задание 8 ------------------------------------------")
+        solveTask()
 
 
     }
