@@ -7,6 +7,12 @@ import kotlin.math.sqrt
 
 
 class Main2 {
+
+//    Написать программу, которая читает массив Int с клавиатуры,
+//    находит минимальный, максимальный элементы, сумму и произведение элементов. Для работы
+//    написать одну функцию arrayOp(), перебирающую элементы массива, принимающую как
+//    аргументы массив, лямбда выражение и инициализирующее значение. Написать 4 функции
+//    для суммы, произведения, мин и макс, использующих функцию arrayOp().
     val scanner = Scanner(`in`)
 
     fun vvodd(n: Int, m: MutableList<Int>) {
@@ -30,6 +36,7 @@ class Main2 {
     fun maxd(m: MutableList<Int>): Int = arrayOP(m, m.size, m[0]) { a, b -> if (a > b) a else b }
     fun mind(m: MutableList<Int>): Int = arrayOP(m, m.size, m[0]) { a, b -> if (a < b) a else b }
 
+    // Реализовать функцию, которая для заданного списка находит самый частый элемент.
     fun freq(m: MutableList<Int>): Int {
         if (m.isNotEmpty()) {
             val map: MutableMap<Int, Int> = mutableMapOf()
@@ -44,6 +51,8 @@ class Main2 {
         } else return 0
     }
 
+    // Реализовать функцию, которая в из заданного списка строит новый, в котором есть
+    //только четные элементы, которые повторяются в списке четное число раз
     fun new2freq(m: MutableList<Int>): MutableList<Int> {
         if (m.isNotEmpty()) {
             val n: MutableList<Int> = mutableListOf()
@@ -54,6 +63,8 @@ class Main2 {
         } else return mutableListOf()
     }
 
+    //Реализовать функцию, которая строит новый список на основе исходного, удалив из
+    //него все отрицательные числа, сумма цифр которых меньше 10
     fun newlist(m: MutableList<Int>): MutableList<Int> {
         if (m.isNotEmpty()) {
             val n: MutableList<Int> = mutableListOf()
@@ -68,12 +79,16 @@ class Main2 {
 
 
 
-
+//    Реализовать функцию, которая для данного списка указывает, сколько элементов из
+//    него могут быть квадратом какого-то из элементов списка.
     fun countSquareElements(list: List<Int>): Int {
         val set = list.toSet() // Преобразуем список во множество, чтобы удалить дублирующиеся элементы
         return set.count { x -> set.contains(x * x) } // Подсчитываем количество элементов, для которых существует соответствующий квадратный корень в множестве
     }
 
+
+//    Реализовать функцию, которая по трем спискам составляет список, состоящий из
+//    кортежей длины 3, где каждый кортеж (ai,bi,ci) с номером I получен следующим образом:
     fun combineLists(list1: List<Int>, list2: List<Int>, list3: List<Int>): List<Triple<Int, Int, Int>> {
         val sortedList1 = list1.sortedDescending()
         val sortedList2 = list2.sortedBy { digitSum(it) }

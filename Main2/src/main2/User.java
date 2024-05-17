@@ -5,6 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+//Построить класс пользователь — Фамилия, Имя, Отчество, Дата рождения,
+//телеграм. Реализовать вывод на экран, возможность сравнения по дате Рождения,
+//возможность точного равенства, реализовать возможность добавления элементов в
+//множество. Построить HashSet TreeSet с элементами этого класса, проверить корректность
+//работы поиска элементов.
+
 class User implements Comparable<User> {
     private String lastName;
     private String firstName;

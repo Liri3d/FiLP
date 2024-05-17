@@ -16,44 +16,43 @@ import java.util.stream.Collectors;
 
 public class Main2 {
     public static void main(String[] args) {
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.print("Введите кол-во элементов: ");
-//        int size = scanner.nextInt();
-//        int[] arr = new int[size];
-//
-//        System.out.println("Введите элементы:");
-//        for (int i = 0; i < size; i++) {
-//            arr[i] = scanner.nextInt();
-//        }
-//
-//        int sum = arrayOp(arr, (a, b) -> a + b, 0);
-//        int product = arrayOp(arr, (a, b) -> a * b, 1);
-//        int min = arrayOp(arr, (a, b) -> a < b ? a : b, Integer.MAX_VALUE);
-//        int max = arrayOp(arr, (a, b) -> a > b ? a : b, Integer.MIN_VALUE);
-//
-//        System.out.println("Сумма: " + sum);
-//        System.out.println("Произведение: " + product);
-//        System.out.println("Минимум: " + min);
-//        System.out.println("Максимум: " + max);
-//        
-//        int mostFrequentElement = findMostFrequentElement(arr);
-//        System.out.println("Самый частый элемент: " + mostFrequentElement);
-//
-//        List<Integer> evenRepeatedElements = findEvenRepeatedElements(arr);
-//        System.out.println("Четные элементы, повторяющиеся четное число раз: " + evenRepeatedElements);
-//
-//        List<Integer> filteredList = filterNegativeNumbers(arr);
-//        System.out.println("Список без отрицательных чисел с суммой цифр < 10: " + filteredList);
         
         
+//    Написать программу, которая читает массив Int с клавиатуры,
+//    находит минимальный, максимальный элементы, сумму и произведение элементов. Для работы
+//    написать одну функцию arrayOp(), перебирающую элементы массива, принимающую как
+//    аргументы массив, лямбда выражение и инициализирующее значение. Написать 4 функции
+//    для суммы, произведения, мин и макс, использующих функцию arrayOp().
         
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите кол-во элементов: ");
+        int size = scanner.nextInt();
+        int[] arr = new int[size];
+
+        System.out.println("Введите элементы:");
+        for (int i = 0; i < size; i++) {
+            arr[i] = scanner.nextInt();
+        }
+
+        int sum = arrayOp(arr, (a, b) -> a + b, 0);
+        int product = arrayOp(arr, (a, b) -> a * b, 1);
+        int min = arrayOp(arr, (a, b) -> a < b ? a : b, Integer.MAX_VALUE);
+        int max = arrayOp(arr, (a, b) -> a > b ? a : b, Integer.MIN_VALUE);
+
+        System.out.println("Сумма: " + sum);
+        System.out.println("Произведение: " + product);
+        System.out.println("Минимум: " + min);
+        System.out.println("Максимум: " + max);
         
-        
-        
-        
-        
-        
-        
+        int mostFrequentElement = findMostFrequentElement(arr);
+        System.out.println("Самый частый элемент: " + mostFrequentElement);
+
+        List<Integer> evenRepeatedElements = findEvenRepeatedElements(arr);
+        System.out.println("Четные элементы, повторяющиеся четное число раз: " + evenRepeatedElements);
+
+        List<Integer> filteredList = filterNegativeNumbers(arr);
+        System.out.println("Список без отрицательных чисел с суммой цифр < 10: " + filteredList);
+      
         
         User user1 = new User("Фам", "Им", "От", LocalDate.of(1999, 7, 2), "@a");
         User user2 = new User("Иванов", "Иван", "Иванович", LocalDate.of(1964, 2, 12), "@ivan");
@@ -108,7 +107,7 @@ public class Main2 {
         return result;
     }
     
-    
+    // Реализовать функцию, которая для заданного списка находит самый частый элемент.
     private static int findMostFrequentElement(int[] arr) {
         Map<Integer, Integer> frequencyMap = new HashMap<>();
         for (int num : arr) {
@@ -121,6 +120,8 @@ public class Main2 {
                 .orElse(0);
     }
 
+    // Реализовать функцию, которая в из заданного списка строит новый, в котором есть
+    //только четные элементы, которые повторяются в списке четное число раз
     private static List<Integer> findEvenRepeatedElements(int[] arr) {
         Map<Integer, Integer> frequencyMap = new HashMap<>();
         for (int num : arr) {
@@ -135,6 +136,8 @@ public class Main2 {
                 .collect(Collectors.toList());
     }
 
+    //Реализовать функцию, которая строит новый список на основе исходного, удалив из
+    //него все отрицательные числа, сумма цифр которых меньше 10
     private static List<Integer> filterNegativeNumbers(int[] arr) {
         return Arrays.stream(arr)
                 .filter(num -> !(num < 0 && sumOfDigits(Math.abs(num)) < 10))
