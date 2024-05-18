@@ -124,12 +124,77 @@ class Main2 {
 
 
 // Задание 3
+//    4 Дан целочисленный массив. Вывести индексы массива в том порядке, в
+//    котором соответствующие им элементы образуют убывающую последовательность.
+    fun printIndicesInDescendingOrder(array: IntArray) {
+        val indices = array.indices
+
+        indices.sortedByDescending { array[it] }
+            .forEach(::println)
+    }
+//    9 Дан целочисленный массив. Необходимо найти элементы, расположенные
+//    перед последним минимальным.
+    fun findElementsBeforeLastMin(array: IntArray): List<Int> {
+        val lastMinIndex = array.lastIndexOf(array.minOrNull()!!)
+        return array.take(lastMinIndex)
+    }
+//    21 Дан целочисленный массив. Необходимо найти элементы, расположенные
+//    после первого максимального.
+    fun findElementsAfterFirstMax(array: IntArray): List<Int> {
+        val firstMaxIndex = array.indexOf(array.maxOrNull()!!)
+        return array.drop(firstMaxIndex + 1)
+    }
+//    15 Дан целочисленный массив и натуральный индекс (число, меньшее размера
+//    массива). Необходимо определить является ли элемент по указанному индексу
+//    локальным минимумом.
+    fun isLocalMinimum(array: IntArray, index: Int): Boolean {
+        if (index < 0 || index >= array.size) {
+            throw IndexOutOfBoundsException("Неверный индекс: $index")
+        }
+
+        val element = array[index]
+        val leftElement = array.getOrNull(index - 1)
+        val rightElement = array.getOrNull(index + 1)
+
+        return (leftElement == null || element < leftElement) && (rightElement == null || element < rightElement)
+    }
+//    32 Дан целочисленный массив. Найти количество его локальных максимумов.
+    fun countLocalMaxima(array: IntArray): Int {
+        if (array.size < 3) {
+            return 0
+        }
+
+        var count = 0
+
+        for (i in 0 until array.size) {
+            if (i == 0 && array[i] > array[i + 1]) {
+                count++
+            } else if (i == array.size - 1 && array[i] > array[i - 1]) {
+                count++
+            } else if (i > 0 && i < array.size - 1 && array[i] > array[i - 1] && array[i] > array[i + 1]) {
+                count++
+            }
+        }
+
+        return count
+    }
+//    29 Дан целочисленный массив и интервал a..b. Необходимо проверить наличие
+//    максимального элемента массива в этом интервале.
+    fun checkMaxInRange(array: IntArray, a: Int, b: Int): Boolean {
+        if (array.isEmpty()) {
+            return false
+        }
+
+        val maxElement = array.maxOrNull() ?: return false
+        return maxElement in a..b
+    }
+
+// Задание 4
 
 
-
-    
 
     fun main() {
+        // Задание 1
 //        println("Введите количество элементов: ")
 //        val n = scanner.nextInt()
 //        println("Введите элементы:")
@@ -165,7 +230,7 @@ class Main2 {
         //    h.add(u4)
         //    for (x in h)x.write()
 
-
+// Задание 2
         val list = listOf(2, 3, 4, 6, 8, 9, 10)
         val count = countSquareElements(list)
         println("Количество элементов, которые являются квадратом какого-то другого элемента: $count")
@@ -178,6 +243,51 @@ class Main2 {
         combinedList.forEach { (a, b, c) ->
             println("($a, $b, $c)")
         }
+
+
+
+        // Задание 3
+
+        val array = intArrayOf(5, 2, 7, 3, 9, 1)
+        println("\nМассив: ${array.joinToString(", ")}")
+        println("Индексы убывающей последовательности:")
+        printIndicesInDescendingOrder(array)
+
+        val array1 = intArrayOf(5, 2, 7, 3, 9, 1, 2, 3, 1, 56)
+        println("\nМассив: ${array1.joinToString(", ")}")
+        val elements = findElementsBeforeLastMin(array1)
+        println("Элементы перед последним минимальным: ${elements.joinToString(", ")}")
+
+        val array2 = intArrayOf(5, 2, 7, 3, 9, 9, 1, 2, 3, 1)
+        println("\nМассив: ${array2.joinToString(", ")}")
+        val elements1 = findElementsAfterFirstMax(array2)
+        println("Элементы после первого максимального: ${elements1.joinToString(", ")}")
+
+        val array3 = intArrayOf(5, 2, 7, 3, 9, 1)
+        val index = 2
+        println("\nМассив: ${array3.joinToString(", ")}")
+        println("Индекс: ${index}")
+        val isLocalMin = isLocalMinimum(array3, index)
+        println("Элемент по индексу $index является локальным минимумом: $isLocalMin")
+
+        val array4 = intArrayOf(5, 1, 3, 2, 4, 1, 5, 2, 7)
+        println("\nМассив: ${array4.joinToString(", ")}")
+        val localMaximaCount = countLocalMaxima(array4)
+        println("Количество локальных максимумов: $localMaximaCount")
+
+        val array5 = intArrayOf(1, 3, 2, 4, 1, 5, 2, 7)
+        val a = 6
+        val b = 7
+        println("\nМассив: ${array5.joinToString(", ")}")
+        val maxInRange = checkMaxInRange(array5, a, b)
+        if (maxInRange) {
+            println("Максимальный элемент присутствует в интервале $a..$b")
+        } else {
+            println("Максимальный элемент отсутствует в интервале $a..$b")
+        }
+
+        // Задание 4
+
     }
 }
 
