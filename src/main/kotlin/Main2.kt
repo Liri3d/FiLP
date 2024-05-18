@@ -189,8 +189,6 @@ class Main2 {
         return maxElement in a..b
     }
 
-// Задание 4
-
 
 
     fun main() {
@@ -231,62 +229,84 @@ class Main2 {
         //    for (x in h)x.write()
 
 // Задание 2
-        val list = listOf(2, 3, 4, 6, 8, 9, 10)
-        val count = countSquareElements(list)
-        println("Количество элементов, которые являются квадратом какого-то другого элемента: $count")
-
-        val list1 = listOf(10, 5, 8, 3, 1)
-        val list2 = listOf(123, 456, 789, 234, 567)
-        val list3 = listOf(20, 15, 25, 30, 10)
-
-        val combinedList = combineLists(list1, list2, list3)
-        combinedList.forEach { (a, b, c) ->
-            println("($a, $b, $c)")
-        }
+//        val list = listOf(2, 3, 4, 6, 8, 9, 10)
+//        val count = countSquareElements(list)
+//        println("Количество элементов, которые являются квадратом какого-то другого элемента: $count")
+//
+//        val list1 = listOf(10, 5, 8, 3, 1)
+//        val list2 = listOf(123, 456, 789, 234, 567)
+//        val list3 = listOf(20, 15, 25, 30, 10)
+//
+//        val combinedList = combineLists(list1, list2, list3)
+//        combinedList.forEach { (a, b, c) ->
+//            println("($a, $b, $c)")
+//        }
 
 
 
         // Задание 3
 
-        val array = intArrayOf(5, 2, 7, 3, 9, 1)
-        println("\nМассив: ${array.joinToString(", ")}")
-        println("Индексы убывающей последовательности:")
-        printIndicesInDescendingOrder(array)
-
-        val array1 = intArrayOf(5, 2, 7, 3, 9, 1, 2, 3, 1, 56)
-        println("\nМассив: ${array1.joinToString(", ")}")
-        val elements = findElementsBeforeLastMin(array1)
-        println("Элементы перед последним минимальным: ${elements.joinToString(", ")}")
-
-        val array2 = intArrayOf(5, 2, 7, 3, 9, 9, 1, 2, 3, 1)
-        println("\nМассив: ${array2.joinToString(", ")}")
-        val elements1 = findElementsAfterFirstMax(array2)
-        println("Элементы после первого максимального: ${elements1.joinToString(", ")}")
-
-        val array3 = intArrayOf(5, 2, 7, 3, 9, 1)
-        val index = 2
-        println("\nМассив: ${array3.joinToString(", ")}")
-        println("Индекс: ${index}")
-        val isLocalMin = isLocalMinimum(array3, index)
-        println("Элемент по индексу $index является локальным минимумом: $isLocalMin")
-
-        val array4 = intArrayOf(5, 1, 3, 2, 4, 1, 5, 2, 7)
-        println("\nМассив: ${array4.joinToString(", ")}")
-        val localMaximaCount = countLocalMaxima(array4)
-        println("Количество локальных максимумов: $localMaximaCount")
-
-        val array5 = intArrayOf(1, 3, 2, 4, 1, 5, 2, 7)
-        val a = 6
-        val b = 7
-        println("\nМассив: ${array5.joinToString(", ")}")
-        val maxInRange = checkMaxInRange(array5, a, b)
-        if (maxInRange) {
-            println("Максимальный элемент присутствует в интервале $a..$b")
-        } else {
-            println("Максимальный элемент отсутствует в интервале $a..$b")
-        }
+//        val array = intArrayOf(5, 2, 7, 3, 9, 1)
+//        println("\nМассив: ${array.joinToString(", ")}")
+//        println("Индексы убывающей последовательности:")
+//        printIndicesInDescendingOrder(array)
+//
+//        val array1 = intArrayOf(5, 2, 7, 3, 9, 1, 2, 3, 1, 56)
+//        println("\nМассив: ${array1.joinToString(", ")}")
+//        val elements = findElementsBeforeLastMin(array1)
+//        println("Элементы перед последним минимальным: ${elements.joinToString(", ")}")
+//
+//        val array2 = intArrayOf(5, 2, 7, 3, 9, 9, 1, 2, 3, 1)
+//        println("\nМассив: ${array2.joinToString(", ")}")
+//        val elements1 = findElementsAfterFirstMax(array2)
+//        println("Элементы после первого максимального: ${elements1.joinToString(", ")}")
+//
+//        val array3 = intArrayOf(5, 2, 7, 3, 9, 1)
+//        val index = 2
+//        println("\nМассив: ${array3.joinToString(", ")}")
+//        println("Индекс: ${index}")
+//        val isLocalMin = isLocalMinimum(array3, index)
+//        println("Элемент по индексу $index является локальным минимумом: $isLocalMin")
+//
+//        val array4 = intArrayOf(5, 1, 3, 2, 4, 1, 5, 2, 7)
+//        println("\nМассив: ${array4.joinToString(", ")}")
+//        val localMaximaCount = countLocalMaxima(array4)
+//        println("Количество локальных максимумов: $localMaximaCount")
+//
+//        val array5 = intArrayOf(1, 3, 2, 4, 1, 5, 2, 7)
+//        val a = 6
+//        val b = 7
+//        println("\nМассив: ${array5.joinToString(", ")}")
+//        val maxInRange = checkMaxInRange(array5, a, b)
+//        if (maxInRange) {
+//            println("Максимальный элемент присутствует в интервале $a..$b")
+//        } else {
+//            println("Максимальный элемент отсутствует в интервале $a..$b")
+//        }
 
         // Задание 4
+
+            val m: MutableList<Pasport> = mutableListOf()
+            val u1=Pasport("Фам","Им","От", 1345, 678910, Date(1999,7,5),  "Женщина", "г. Москва", "УФМС России по Московской области", Date(2019, 2, 6), 956346)
+            val u2=Pasport("Иванов", "Иван", "Иванович", 1234, 123456, Date(1964, 2, 2), "Мужчина", "г. Санкт-Петербург", "УФМС России по Ленинградской области", Date(1984, 4, 27), 208650)
+            val u3=Pasport("Синицын", "Дмитрий", "Игоревич",  1123, 456789, Date(1964, 2, 3), "Мужчина", "г. Ростов-на-Дону", "УФМС России по Ростовской области", Date(1984, 1, 21), 457090)
+            val u4=Pasport("Иванов", "Иван", "Иванович", 1234, 123456, Date(1964, 2, 2), "Мужчина", "г. Санкт-Петербург", "УФМС России по Ленинградской области", Date(1984, 4, 27), 208650)
+            m.add(u1)
+            m.add(u2)
+            m.add(u3)
+            m.add(u4)
+            for (x in m)x.write()
+            println("-------------------------------------------------------------------------------")
+            m.sort()
+            for (x in m)x.write()
+            println("-------------------------------------------------------------------------------")
+            val h: HashSet<Pasport> = hashSetOf()
+            h.add(u1)
+            h.add(u2)
+            h.add(u3)
+            h.add(u4)
+            for (x in h)x.write()
+
 
     }
 }
