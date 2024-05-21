@@ -51,6 +51,9 @@ class Consultant(name: String, age: Int, val expertiseArea: String) : Employee(n
     }
 }
 
+
+
+
 // Пример использования классов
 fun main() {
     // Задание 1
@@ -64,11 +67,39 @@ fun main() {
 
     val employees: List<Employee> = listOf(hrManager1, manager1, consultant1, hrManager2, manager2, consultant2)
 
-    for (employee in employees) {
-        println("Имя: ${employee.name}, Возраст: ${employee.age}, Должность: ${employee.position}, Зарплата: ${employee.calculateSalary()}")
+//    for (employee in employees) {
+//        println("Имя: ${employee.name}, Возраст: ${employee.age}, Должность: ${employee.position}, Зарплата: ${employee.calculateSalary()}")
+//        println()
+//    }
+
+    // Задание 2-3
+    // Создаем объект класса-контейнера с указанным списком объектов
+    val container = EmployeeContainer(employees)
+
+    // Сериализуем класс-контейнер в JSON
+    val gson = Gson()
+    val json = gson.toJson(container)
+
+    // Сохраняем JSON в файл
+    val filePath = "employees.json"
+    File(filePath).writeText(json)
+
+    // Десериализация объектов из файла
+    val jsonContent = File(filePath).readText()
+    val type: Type = object : TypeToken<EmployeeContainer>() {}.type
+    val deserializedContainer: EmployeeContainer = gson.fromJson(jsonContent, type)
+
+    // Получаем список объектов из класса-контейнера
+    val deserializedEmployees: List<Employee> = deserializedContainer.employees
+
+    // Вывод информации о каждом объекте
+    for (employee in deserializedEmployees) {
+        println("Имя: ${employee.name}, Возраст: ${employee.age}, Должность: ${employee.position}")
     }
 
-    }
+
+
+}
 
 
 
