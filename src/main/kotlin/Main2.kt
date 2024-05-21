@@ -189,6 +189,27 @@ class Main2 {
         return maxElement in a..b
     }
 
+    fun countFibonacciNumbers(arr: IntArray): Int {
+        val fibonacciNumbers = mutableSetOf<Int>()
+        var a = 0
+        var b = 1
+        fibonacciNumbers.add(a)
+        fibonacciNumbers.add(b)
+
+        val maxValue = arr.maxOrNull() ?: return 0 // Обработка пустого массива
+
+        while (true) {
+            val temp = b
+            b = a + b
+            a = temp
+            if (b > maxValue) break
+            fibonacciNumbers.add(b)
+        }
+
+        return arr.count { it in fibonacciNumbers }
+    }
+
+
 
 
     fun main() {
@@ -286,26 +307,34 @@ class Main2 {
 
         // Задание 4
 
-            val m: MutableList<Pasport> = mutableListOf()
-            val u1=Pasport("Фам","Им","От", 1345, 678910, Date(1999,7,5),  "Женщина", "г. Москва", "УФМС России по Московской области", Date(2019, 2, 6), 956346)
-            val u2=Pasport("Иванов", "Иван", "Иванович", 1234, 123456, Date(1964, 2, 2), "Мужчина", "г. Санкт-Петербург", "УФМС России по Ленинградской области", Date(1984, 4, 27), 208650)
-            val u3=Pasport("Синицын", "Дмитрий", "Игоревич",  1123, 456789, Date(1964, 2, 3), "Мужчина", "г. Ростов-на-Дону", "УФМС России по Ростовской области", Date(1984, 1, 21), 457090)
-            val u4=Pasport("Иванов", "Иван", "Иванович", 1234, 123456, Date(1964, 2, 2), "Мужчина", "г. Санкт-Петербург", "УФМС России по Ленинградской области", Date(1984, 4, 27), 208650)
-            m.add(u1)
-            m.add(u2)
-            m.add(u3)
-            m.add(u4)
-            for (x in m)x.write()
-            println("-------------------------------------------------------------------------------")
-            m.sort()
-            for (x in m)x.write()
-            println("-------------------------------------------------------------------------------")
-            val h: HashSet<Pasport> = hashSetOf()
-            h.add(u1)
-            h.add(u2)
-            h.add(u3)
-            h.add(u4)
-            for (x in h)x.write()
+//            val m: MutableList<Pasport> = mutableListOf()
+//            val u1=Pasport("Фам","Им","От", 1345, 678910, Date(1999,7,5),  "Женщина", "г. Москва", "УФМС России по Московской области", Date(2019, 2, 6), 956346)
+//            val u2=Pasport("Иванов", "Иван", "Иванович", 1234, 123456, Date(1964, 2, 2), "Мужчина", "г. Санкт-Петербург", "УФМС России по Ленинградской области", Date(1984, 4, 27), 208650)
+//            val u3=Pasport("Синицын", "Дмитрий", "Игоревич",  1123, 456789, Date(1964, 2, 3), "Мужчина", "г. Ростов-на-Дону", "УФМС России по Ростовской области", Date(1984, 1, 21), 457090)
+//            val u4=Pasport("Иванов", "Иван", "Иванович", 1234, 123456, Date(1964, 2, 2), "Мужчина", "г. Санкт-Петербург", "УФМС России по Ленинградской области", Date(1984, 4, 27), 208650)
+//            m.add(u1)
+//            m.add(u2)
+//            m.add(u3)
+//            m.add(u4)
+//            for (x in m)x.write()
+//            println("-------------------------------------------------------------------------------")
+//            m.sort()
+//            for (x in m)x.write()
+//            println("-------------------------------------------------------------------------------")
+//            val h: HashSet<Pasport> = hashSetOf()
+//            h.add(u1)
+//            h.add(u2)
+//            h.add(u3)
+//            h.add(u4)
+//            for (x in h)x.write()
+
+        // Доп задание
+        val arr = intArrayOf(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 380, 546)
+
+        val count = countFibonacciNumbers(arr)
+        println("Количество чисел Фибоначчи: $count") // Output: Number of Fibonacci numbers: 10
+
+
 
 
     }
