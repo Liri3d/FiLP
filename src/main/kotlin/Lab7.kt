@@ -53,6 +53,38 @@ class Consultant(name: String, age: Int, val expertiseArea: String) : Employee(n
 
 
 
+// Функция для записи результатов запросов в файл Excel
+fun writeQueryResultsToExcel(queryResults: List<String>, filePath: String) {
+    // Создаем новую рабочую книгу Excel
+    val workbook = XSSFWorkbook()
+
+    // Создаем новый лист
+    val sheet = workbook.createSheet("Query Results")
+
+    // Создаем заголовок столбца
+    val headerRow = sheet.createRow(0)
+    val headerCell = headerRow.createCell(0)
+    headerCell.setCellValue("Результаты запросов")
+
+    // Заполняем данные о результатах запросов
+    for ((index, result) in queryResults.withIndex()) {
+        val row = sheet.createRow(index + 1)
+        val cell = row.createCell(0)
+        cell.setCellValue(result)
+    }
+
+    // Автоматически подгоняем ширину столбца по содержимому
+    sheet.autoSizeColumn(0)
+
+    // Сохраняем рабочую книгу в файл
+    val outputStream = File(filePath).outputStream()
+    workbook.write(outputStream)
+    workbook.close()
+
+    println("Результаты запросов сохранены в файл: $filePath")
+}
+
+
 
 // Пример использования классов
 fun main() {
@@ -141,7 +173,9 @@ fun main() {
         println(result)
     }
 
-
+    // Задание 6
+    val excelFilePath = "query_results.xlsx"
+    writeQueryResultsToExcel(queryResults, excelFilePath)
 }
 
 
