@@ -97,8 +97,32 @@ fun main() {
         println("Имя: ${employee.name}, Возраст: ${employee.age}, Должность: ${employee.position}")
     }
 
+    // Задание 4
+    val queryResults = mutableListOf<String>()
+    // Запрос: Самый старший сотрудник
+    val oldestEmployee = deserializedEmployees.maxByOrNull { it.age }
+    if (oldestEmployee != null) {
+        println("\nСамый старший сотрудник:")
+        val oldestEmployeeResult = "Самый старший сотрудник: Имя: ${oldestEmployee.name}, Возраст: ${oldestEmployee.age}, Должность: ${oldestEmployee.position}"
+        queryResults.add(oldestEmployeeResult)
+    } else {
+        queryResults.add("Список сотрудников пуст.")
+    }
+
+    // Запрос: Самый младший сотрудник
+    val youngestEmployee = deserializedEmployees.minByOrNull { it.age }
+    if (youngestEmployee != null) {
+        val youngestEmployeeResult = "Самый младший сотрудник: Имя: ${youngestEmployee.name}, Возраст: ${youngestEmployee.age}, Должность: ${youngestEmployee.position}"
+        queryResults.add(youngestEmployeeResult)
+    } else {
+        queryResults.add("Список сотрудников пуст.")
+    }
 
 
+
+
+
+    println(queryResults)
 }
 
 
