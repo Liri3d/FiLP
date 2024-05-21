@@ -93,16 +93,15 @@ fun main() {
     val deserializedEmployees: List<Employee> = deserializedContainer.employees
 
     // Вывод информации о каждом объекте
-    for (employee in deserializedEmployees) {
-        println("Имя: ${employee.name}, Возраст: ${employee.age}, Должность: ${employee.position}")
-    }
+//    for (employee in deserializedEmployees) {
+//        println("Имя: ${employee.name}, Возраст: ${employee.age}, Должность: ${employee.position}")
+//    }
 
     // Задание 4
     val queryResults = mutableListOf<String>()
     // Запрос: Самый старший сотрудник
     val oldestEmployee = deserializedEmployees.maxByOrNull { it.age }
     if (oldestEmployee != null) {
-        println("\nСамый старший сотрудник:")
         val oldestEmployeeResult = "Самый старший сотрудник: Имя: ${oldestEmployee.name}, Возраст: ${oldestEmployee.age}, Должность: ${oldestEmployee.position}"
         queryResults.add(oldestEmployeeResult)
     } else {
@@ -118,11 +117,31 @@ fun main() {
         queryResults.add("Список сотрудников пуст.")
     }
 
+    // Задание 5
+    // Средний возраст консультантов
+    val averageAgeOfConsultants = deserializedEmployees.filter { it.position == "Consultant" }
+        .map { it.age }
+        .average()
+    val averageAgeOfConsultantsResult = "Средний возраст консультантов: $averageAgeOfConsultants"
+    queryResults.add(averageAgeOfConsultantsResult)
+
+    // Процент сотрудников младше 30
+    val percentageYoungerThan30 = (deserializedEmployees.count { it.age < 30 }.toDouble() / deserializedEmployees.size) * 100
+    val roundedPercentage = "%.1f".format(percentageYoungerThan30)
+    val percentageYoungerThan30Result = "Процент сотрудников младше 30: $roundedPercentage%"
+    queryResults.add(percentageYoungerThan30Result)
+
+    // Процент сотрудников старше 40 из отдела маркетинга
+    val marketingEmployees = deserializedEmployees.filter { it.position == "Отдел маркетинга" }
+    val percentageOlderThan40InMarketing = (marketingEmployees.count { it.age > 40 }.toDouble() / marketingEmployees.size) * 100
+    val percentageOlderThan40InMarketingResult = "Процент сотрудников старше 40 из отдела маркетинга: $percentageOlderThan40InMarketing%"
+    queryResults.add(percentageOlderThan40InMarketingResult)
+
+    for (result in queryResults) {
+        println(result)
+    }
 
 
-
-
-    println(queryResults)
 }
 
 
