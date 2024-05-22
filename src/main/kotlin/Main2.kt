@@ -1,10 +1,8 @@
+
 import java.lang.Math.abs
 import java.lang.System.`in`
 import java.util.*
-import kotlin.collections.HashSet
 import kotlin.math.absoluteValue
-import kotlin.math.sqrt
-
 
 class Main2 {
 // Задание 1
@@ -210,6 +208,126 @@ class Main2 {
     }
 
 
+    // Задание 5
+
+
+    data class Node(var data: String, var left: Node? = null, var right: Node? = null)
+
+    class BinaryTree {
+        var root: Node? = null
+
+        fun insert(data: String) {
+            root = insertRec(root, data)
+        }
+
+//        private fun insertRec(root: Node?, data: String): Node {
+//            if (root == null) {
+//                return Node(data)
+//            }
+//
+//            if (data.split(" ").size < root.data.split(" ").size) {
+//                root.left = insertRec(root.left, data)
+//            } else {
+//                root.right = insertRec(root.right, data)
+//            }
+//
+//            return root
+//        }
+
+        private fun insertRec(root: Node?, data: String): Node {
+            if (root == null) {
+                return Node(data)
+            }
+
+            if (data.length < root.data.length) {
+                root.left = insertRec(root.left, data)
+            } else {
+                root.right = insertRec(root.right, data)
+            }
+
+            return root
+        }
+
+        fun sortedList(): List<String> {
+            val result = mutableListOf<String>()
+            inOrderTraversal(root, result)
+            return result
+        }
+
+        private fun inOrderTraversal(node: Node?, result: MutableList<String>) {
+            if (node != null) {
+                inOrderTraversal(node.left, result)
+                result.add(node.data)
+                inOrderTraversal(node.right, result)
+            }
+        }
+    }
+
+//    fun printBinaryTree(root: Node?, indent: String = "") {
+//        if (root != null) {
+//            println("$indent${root.data}")
+//            printBinaryTree(root.left, "$indent  |-- ")
+//            printBinaryTree(root.right, "$indent  |-- ")
+//        }
+//    }
+
+    fun printBinaryTree(root: Node?, indent: String = "", isLeft: Boolean = false) {
+        if (root != null) {
+            printBinaryTree(root.right, "$indent${if (isLeft) "       " else "        "}", false)
+            println("$indent${root.data}")
+            printBinaryTree(root.left, "$indent${if (isLeft) "        " else "       "}", true)
+        }
+    }
+
+    fun createBinaryTree(strings: List<String>): BinaryTree {
+        val binaryTree = BinaryTree()
+        for (string in strings) {
+            binaryTree.insert(string)
+        }
+        return binaryTree
+    }
+
+    fun createSortedList(binaryTree: BinaryTree): List<String> {
+        return binaryTree.sortedList()
+    }
+
+
+
+
+
+    fun countLetters(str: String): Map<Char, Int> {
+        val letterCounts = mutableMapOf<Char, Int>()
+
+        for (char in str) {
+            if (char.isLetter()) {
+                val lowerChar = char.toLowerCase()
+                letterCounts[lowerChar] = (letterCounts[lowerChar] ?: 0) + 1
+            }
+        }
+
+        return letterCounts
+    }
+
+    fun TreeToLine(root: Node?): List<String> {
+        val result = mutableListOf<String>()
+        TreeToLineHelper(root, 0, result)
+        val result1 = result.sortedByDescending {  str -> countLetters(str).size }
+        return (result1)
+    }
+
+    private fun TreeToLineHelper(root: Node?, level: Int, result: MutableList<String>) {
+        if (root == null) {
+            return
+        }
+
+        // Добавляем значение узла в результат
+        result.add("${root.data}")
+
+        // Рекурсивно обрабатываем левое и правое поддерево
+        TreeToLineHelper(root.left, level + 1, result)
+        TreeToLineHelper(root.right, level + 1, result)
+    }
+
 
 
     fun main() {
@@ -329,13 +447,17 @@ class Main2 {
 //            for (x in h)x.write()
 
         // Доп задание
-        val arr = intArrayOf(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 380, 546)
+//        val arr = intArrayOf(0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 380, 546)
+//
+//        val count = countFibonacciNumbers(arr)
+//        println("Количество чисел Фибоначчи: $count") // Output: Number of Fibonacci numbers: 10
 
-        val count = countFibonacciNumbers(arr)
-        println("Количество чисел Фибоначчи: $count") // Output: Number of Fibonacci numbers: 10
 
-
-
+        // Задание 5
+        val strings = listOf("adcd", "adcde", "ab", "adcdef", "abc", "a", "abcdefg")
+        val binaryTree = createBinaryTree(strings)
+        printBinaryTree(binaryTree.root)
+        print(TreeToLine(binaryTree.root))
 
     }
 }
