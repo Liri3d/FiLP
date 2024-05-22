@@ -330,6 +330,102 @@ class Main2 {
 
 
 
+    // Задание 6
+    // Вариант 4 Задачи 40, 44, 51, 58
+
+//    1.40 Дан целочисленный массив. Необходимо найти минимальный четный элемент.
+    fun findMinEven(arr: IntArray): Int? {
+        if (arr.isEmpty()) {
+            return null // Возвращаем null, если массив пустой
+        }
+
+        var minEven: Int? = null
+
+        for (num in arr) {
+            if (num % 2 == 0) { // Проверяем, является ли число четным
+                if (minEven == null || num < minEven) {
+                    minEven = num // Обновляем minEven, если найдено меньшее четное число
+                }
+            }
+        }
+
+        return minEven // Возвращаем минимальное четное число или null, если четных элементов нет
+    }
+
+//    1.44 Дан массив чисел. Необходимо проверить, чередуются ли в нем целые и
+//    вещественные числа.
+    fun checkAlternation(numbers: Array<Any?>): Boolean {
+        var isInteger = true
+
+        for (num in numbers) {
+            if (num == null) {
+                return false
+            }
+
+            when (num) {
+                is Int -> {
+                    if (!isInteger) {
+                        return false
+                    }
+                    isInteger = false
+                }
+                is Double -> {
+                    if (isInteger) {
+                        return false
+                    }
+                    isInteger = true
+                }
+                else -> {
+                    return false
+                }
+            }
+        }
+
+        return true
+    }
+
+//    1.51. Для введенного списка построить два списка L1 и L2, где элементы L1 это
+//    неповторяющиеся элементы исходного списка, а элемент списка L2 с номером i показывает,
+//    сколько раз элемент списка L1 с таким номером повторяется в исходном.
+    fun buildLists(numbers: List<Any?>): Pair<List<Any?>, List<Int>> {
+        val uniqueElements = mutableListOf<Any?>()
+        val countElements = mutableListOf<Int>()
+
+        for (num in numbers) {
+            val index = uniqueElements.indexOf(num)
+            if (index == -1) {
+                uniqueElements.add(num)
+                countElements.add(1)
+            } else {
+                countElements[index] += 1
+            }
+        }
+
+        return Pair(uniqueElements, countElements)
+    }
+
+
+//    1.58 Для введенного списка вывести количество элементов, которые могут быть
+//    получены как сумма двух любых других элементов списка.
+    fun countPairSumElements(list: List<Int>): Int {
+        val seen = mutableSetOf<Int>()
+        var count = 0
+        for (i in list.indices) {
+            for (j in i + 1 until list.size) {
+                val sum = list[i] + list[j]
+                if (sum in list && sum !in seen) {
+                    count++
+                    seen.add(sum)
+                }
+            }
+        }
+        return count
+    }
+
+    
+
+
+
     fun main() {
         // Задание 1
 //        println("Введите количество элементов: ")
@@ -452,12 +548,29 @@ class Main2 {
 //        val count = countFibonacciNumbers(arr)
 //        println("Количество чисел Фибоначчи: $count") // Output: Number of Fibonacci numbers: 10
 
-
         // Задание 5
         val strings = listOf("adcd", "adcde", "ab", "adcdef", "abc", "a", "abcdefg")
         val binaryTree = createBinaryTree(strings)
         printBinaryTree(binaryTree.root)
         print(TreeToLine(binaryTree.root))
+
+        // Задание 6
+
+        val myArray = intArrayOf(3, 7, 2, 9, 4, 1, 6)
+        val minEven = findMinEven(myArray)
+        println("\n\nМинимальный четный элемент ${myArray.contentToString()} ${minEven}")
+
+        val numbers = arrayOf<Any?>(1, 2.5, 3, 4.7, 5, 6.1)
+        println("Чередуются целые и вещественные числа ${numbers.contentToString()} ${checkAlternation(numbers)}") // true
+
+        val inputList = listOf(1, 2.5, 3, 4.7, 3, 5, 6.1, 2.5)
+        val (l1, l2) = buildLists(inputList)
+        println("Построить два списка ${inputList} L1: ${l1} L2: ${l2}")
+
+        val list = listOf(2, 3, 4, 5, 6)
+        val count = countPairSumElements(list)
+        println("Кол-во эл., которые являются суммой двух других эл. ${list} Кол-во: ${count}")
+
 
     }
 }
