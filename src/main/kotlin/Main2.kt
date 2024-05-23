@@ -311,6 +311,7 @@ class Main2 {
     fun TreeToLine(root: Node?): List<String> {
         val result = mutableListOf<String>()
         TreeToLineHelper(root, 0, result)
+        print(result)
         val result1 = result.sortedByDescending {  str -> countLetters(str).size }
         return (result1)
     }
@@ -332,100 +333,162 @@ class Main2 {
 
     // Задание 6
     // Вариант 4 Задачи 40, 44, 51, 58
-
-//    1.40 Дан целочисленный массив. Необходимо найти минимальный четный элемент.
     fun findMinEven(arr: IntArray): Int? {
-        if (arr.isEmpty()) {
-            return null // Возвращаем null, если массив пустой
+        return findMinEvenRecursive(arr, 0)
+    }
+
+    private tailrec fun findMinEvenRecursive(arr: IntArray, index: Int, minEven: Int? = null): Int? {
+        if (index == arr.size) {
+            return minEven // Возвращаем минимальное четное число или null, если четных элементов нет
         }
 
-        var minEven: Int? = null
-
-        for (num in arr) {
-            if (num % 2 == 0) { // Проверяем, является ли число четным
-                if (minEven == null || num < minEven) {
-                    minEven = num // Обновляем minEven, если найдено меньшее четное число
-                }
+        val currentNumber = arr[index]
+        if (currentNumber % 2 == 0) { // Проверяем, является ли число четным
+            if (minEven == null || currentNumber < minEven) {
+                return findMinEvenRecursive(arr, index + 1, currentNumber) // Обновляем minEven, если найдено меньшее четное число
             }
         }
 
-        return minEven // Возвращаем минимальное четное число или null, если четных элементов нет
+        return findMinEvenRecursive(arr, index + 1, minEven) // Продолжаем поиск, если текущее число нечетное
     }
 
-//    1.44 Дан массив чисел. Необходимо проверить, чередуются ли в нем целые и
+
+    //    1.44 Дан массив чисел. Необходимо проверить, чередуются ли в нем целые и
 //    вещественные числа.
     fun checkAlternation(numbers: Array<Any?>): Boolean {
-        var isInteger = true
-
-        for (num in numbers) {
-            if (num == null) {
-                return false
-            }
-
-            when (num) {
-                is Int -> {
-                    if (!isInteger) {
-                        return false
-                    }
-                    isInteger = false
-                }
-                is Double -> {
-                    if (isInteger) {
-                        return false
-                    }
-                    isInteger = true
-                }
-                else -> {
-                    return false
-                }
-            }
-        }
-
-        return true
+        if (numbers.isEmpty()) return false else return checkAlternationRecursive(numbers, 0, numbers[0] is Int)
     }
 
-//    1.51. Для введенного списка построить два списка L1 и L2, где элементы L1 это
+    private tailrec fun checkAlternationRecursive(numbers: Array<Any?>, index: Int, isInteger: Boolean): Boolean {
+        if (index == numbers.size) {
+            return true // Если дошли до конца массива, значит все чередуется корректно
+        }
+
+        val currentElement = numbers[index]
+        if (currentElement == null) {
+            return false // Если встретили null, возвращаем false
+        }
+
+        return when (currentElement) {
+            is Int -> {
+                if (isInteger) {
+                    checkAlternationRecursive(numbers, index + 1, false)
+                } else {
+                    false
+                }
+            }
+            is Double -> {
+                if (!isInteger) {
+                    checkAlternationRecursive(numbers, index + 1, true)
+                } else {
+                    false
+                }
+            }
+            else -> {
+                false // Если элемент не Int или Double, возвращаем false
+            }
+        }
+    }
+
+
+    //    1.51. Для введенного списка построить два списка L1 и L2, где элементы L1 это
 //    неповторяющиеся элементы исходного списка, а элемент списка L2 с номером i показывает,
 //    сколько раз элемент списка L1 с таким номером повторяется в исходном.
     fun buildLists(numbers: List<Any?>): Pair<List<Any?>, List<Int>> {
-        val uniqueElements = mutableListOf<Any?>()
-        val countElements = mutableListOf<Int>()
+        return buildListsRecursive(numbers, mutableListOf(), mutableListOf())
+    }
 
-        for (num in numbers) {
-            val index = uniqueElements.indexOf(num)
-            if (index == -1) {
-                uniqueElements.add(num)
-                countElements.add(1)
-            } else {
-                countElements[index] += 1
-            }
+    private fun buildListsRecursive(
+        remainingNumbers: List<Any?>,
+        uniqueElements: MutableList<Any?>,
+        countElements: MutableList<Int>
+    ): Pair<List<Any?>, List<Int>> {
+        if (remainingNumbers.isEmpty()) {
+            return Pair(uniqueElements, countElements)
         }
 
-        return Pair(uniqueElements, countElements)
+        val head = remainingNumbers.first()
+        val tail = remainingNumbers.drop(1)
+
+        val index = uniqueElements.indexOf(head)
+        if (index == -1) {
+            uniqueElements.add(head)
+            countElements.add(1)
+            return buildListsRecursive(tail, uniqueElements, countElements)
+        } else {
+            countElements[index] += 1
+            return buildListsRecursive(tail, uniqueElements, countElements)
+        }
     }
 
 
-//    1.58 Для введенного списка вывести количество элементов, которые могут быть
+
+    //    1.58 Для введенного списка вывести количество элементов, которые могут быть
 //    получены как сумма двух любых других элементов списка.
+//    fun countPairSumElements(list: List<Int>): Int {
+//        val seen = mutableSetOf<Int>()
+//        var count = 0
+//        for (i in list.indices) {
+//            for (j in i + 1 until list.size) {
+//                val sum = list[i] + list[j]
+//                if (sum in list && sum !in seen) {
+//                    count++
+//                    seen.add(sum)
+//                }
+//            }
+//        }
+//        return count
+//    }
+
+//    fun countPairSumElements(list: List<Int>): Int {
+//        return countPairSumElementsHelper(list, mutableSetOf(), 0, 1)
+//    }
+//
+//    private fun countPairSumElementsHelper(list: List<Int>, seen: MutableSet<Int>, index: Int, i: Int): Int {
+//        if (index >= list.size - 1) {
+//            return 0
+//        }
+//
+//        val sum = list[index] + list[index + i]
+//        var count = 0
+//        if (sum in list && sum !in seen) {
+//            count++
+//            seen.add(sum)
+//        }
+//        if (i <= list.size) {
+//            count = count + countPairSumElementsHelper(list, seen, index, i + 1)
+//        }
+//
+//        return count + countPairSumElementsHelper(list, seen, index + 1, i = 1)
+//    }
+
     fun countPairSumElements(list: List<Int>): Int {
-        val seen = mutableSetOf<Int>()
-        var count = 0
-        for (i in list.indices) {
-            for (j in i + 1 until list.size) {
-                val sum = list[i] + list[j]
-                if (sum in list && sum !in seen) {
-                    count++
-                    seen.add(sum)
-                }
-            }
+        return countPairSumElementsHelper(list, mutableSetOf(), 0, 1)
+    }
+
+    private fun countPairSumElementsHelper(list: List<Int>, seen: MutableSet<Int>, index: Int, i: Int): Int {
+        if (index >= list.size - 1) {
+            return 0
         }
-        return count
+
+        if (index + i >= list.size) {
+            return countPairSumElementsHelper(list, seen, index + 1, 1)
+        }
+
+        val sum = list[index] + list[index + i]
+        var count = 0
+        if (sum in list && sum !in seen) {
+            count++
+            seen.add(sum)
+        }
+        if (i <= list.size) {
+            count = count + countPairSumElementsHelper(list, seen, index, i + 1)
+        }
+
+        return count + countPairSumElementsHelper(list, seen, index + 1, 1)
     }
 
     
-
-
-
     fun main() {
         // Задание 1
 //        println("Введите количество элементов: ")
@@ -560,7 +623,7 @@ class Main2 {
         val minEven = findMinEven(myArray)
         println("\n\nМинимальный четный элемент ${myArray.contentToString()} ${minEven}")
 
-        val numbers = arrayOf<Any?>(1, 2.5, 3, 4.7, 5, 6.1)
+        val numbers = arrayOf<Any?>(2.5, 3, 4.7, 5, 6.1)
         println("Чередуются целые и вещественные числа ${numbers.contentToString()} ${checkAlternation(numbers)}") // true
 
         val inputList = listOf(1, 2.5, 3, 4.7, 3, 5, 6.1, 2.5)
