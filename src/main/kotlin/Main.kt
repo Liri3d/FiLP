@@ -1,7 +1,4 @@
-import java.lang.System.`in`
 import java.io.File
-import java.util.*
-
 
 class Main {
 
@@ -172,10 +169,6 @@ class Main {
         println("Результаты сохранены в файл $outputFile")
     }
 
-
-
-
-
 // Задание 7 Вариант 4
 // Выделить и вызывать функции высших порядков с соответствующими аргументами.
 // Включить функции, решающие предложенные задачи в программу из задания 5.
@@ -235,10 +228,6 @@ class Main {
     // Произведение
     fun ProductMaxSum(n:Int):Int = maxNonCoprimeNotDivisibleBySmallestDivisor(n) * sumOfDigitsLessThanFive(n)
 
-
-
-
-
 // Задание 8 Вариант 4
 //    Эйлер выяснил, что многочлен n2+n+41 порождает простые числа для всех n=0..39. Среди
 //    произвольных многочленов с целыми коэффициентами n2+an+b, где коэффициенты по
@@ -246,66 +235,46 @@ class Main {
 //    количество простых чисел, начиная с n=0. Вывести произведение его коэффициентов.
 //    Задача должна быть решена без использования списков.
 
+    fun findMaxPrimePolynomial(): Pair<Int, Int> {
+        var maxPrimes = 0
+        var result = 0
+        var A = 0
+        var B = 0
 
-
-
-
-
-
-
-
-
-
-
-
-    fun solveTask() {
-        val results = mutableListOf<Triple<Int, Int, Int>>()
-        for (a in 0..999) {
-            for (b in 0..999) {
-                val count = countPrimes(a, b)
-                results.add(Triple(count, a, b))
+        for (a in -999..999) {
+            for (b in -999..999) {
+                var n = 0
+                while (isPrime(n * n + a * n + b)) {
+                    n++
+                }
+                if (n > maxPrimes) {
+                    maxPrimes = n
+                    A = a
+                    B = b
+                }
             }
         }
-        val maxResult = results.maxByOrNull { it.first }
-        if (maxResult != null) {
-            val (count, a, b) = maxResult
-            println("Коэффициенты: $a * $b")
-            println("Произведение коэффициентов: ${a * b}")
-        }
+        return Pair(A, B)
     }
 
     fun isPrime(n: Int): Boolean {
-        if (n <= 1) return false
-        for (i in 2 until n) {
-            if (n % i == 0) {
+        if (n < 2) return false
+        if (n <= 3) return true
+        if (n % 2 == 0 || n % 3 == 0) return false
+
+        var i = 5
+        while (i * i <= n) {
+            if (n % i == 0 || n % (i + 2) == 0) {
                 return false
             }
+            i += 6
         }
+
         return true
     }
 
-    fun generatePolynomial(a: Int, b: Int, n: Int): Int {
-        return a * n * n + a * n + b
-    }
-
-    fun countPrimes(a: Int, b: Int): Int {
-        var count = 0
-        for (n in 0 until 40) {
-            val polynomial = generatePolynomial(a, b, n)
-            if (polynomial > 0 && isPrime(polynomial)) {
-                count++
-            }
-        }
-        return count
-    }
-
-
-
-
-
-
     fun main() {
-
+//
 //        println("Задание 1 ------------------------------------------")
 //        println("Максимальное число (1,3,2): ${max(1, 3, 2)}")
 //        println("Факториал 3, рек.вверх: ${factup(3)}")
@@ -339,7 +308,7 @@ class Main {
 //        println("Макс не делится на 3 рек. вниз (463): ${hOrderFunc(463,::maxDigdown)}\n")
 //        println("Кол-во делителей рек. вверх (12): ${hOrderFunc(12,::countDivisorsup)}\n")
 //        println("Кол-во делителей рек. вниз (12): ${hOrderFunc(12,::countDivisorsdown)}\n\n")
-
+//
 //        println("Задание 6 ------------------------------------------")
 //        println("Введите путь к файлу: ")
 //        val scanner = Scanner(`in`)
@@ -356,9 +325,8 @@ class Main {
 //        println("Сумма цифр числа, меньших 5:  ${sumOfDigitsLessThanFive(132)}\n")
 
         println("Задание 8 ------------------------------------------")
-        solveTask()
-
-
+        val (a, b) = findMaxPrimePolynomial()
+        println("A = $a, B = $b, Произведение = ${a * b}")
     }
 }
 
