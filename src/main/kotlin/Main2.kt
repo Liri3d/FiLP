@@ -4,6 +4,7 @@ import java.lang.System.`in`
 import java.util.*
 import kotlin.math.absoluteValue
 
+@Suppress("NON_TAIL_RECURSIVE_CALL")
 class Main2 {
 // Задание 1
 //    Написать программу, которая читает массив Int с клавиатуры,
@@ -220,20 +221,6 @@ class Main2 {
             root = insertRec(root, data)
         }
 
-//        private fun insertRec(root: Node?, data: String): Node {
-//            if (root == null) {
-//                return Node(data)
-//            }
-//
-//            if (data.split(" ").size < root.data.split(" ").size) {
-//                root.left = insertRec(root.left, data)
-//            } else {
-//                root.right = insertRec(root.right, data)
-//            }
-//
-//            return root
-//        }
-
         private fun insertRec(root: Node?, data: String): Node {
             if (root == null) {
                 return Node(data)
@@ -262,14 +249,6 @@ class Main2 {
             }
         }
     }
-
-//    fun printBinaryTree(root: Node?, indent: String = "") {
-//        if (root != null) {
-//            println("$indent${root.data}")
-//            printBinaryTree(root.left, "$indent  |-- ")
-//            printBinaryTree(root.right, "$indent  |-- ")
-//        }
-//    }
 
     fun printBinaryTree(root: Node?, indent: String = "", isLeft: Boolean = false) {
         if (root != null) {
@@ -333,6 +312,7 @@ class Main2 {
 
     // Задание 6
     // Вариант 4 Задачи 40, 44, 51, 58
+    // Дан целочисленный массив. Необходимо найти минимальный четный элемент
     fun findMinEven(arr: IntArray): Int? {
         return findMinEvenRecursive(arr, 0)
     }
@@ -425,42 +405,6 @@ class Main2 {
 
     //    1.58 Для введенного списка вывести количество элементов, которые могут быть
 //    получены как сумма двух любых других элементов списка.
-//    fun countPairSumElements(list: List<Int>): Int {
-//        val seen = mutableSetOf<Int>()
-//        var count = 0
-//        for (i in list.indices) {
-//            for (j in i + 1 until list.size) {
-//                val sum = list[i] + list[j]
-//                if (sum in list && sum !in seen) {
-//                    count++
-//                    seen.add(sum)
-//                }
-//            }
-//        }
-//        return count
-//    }
-
-//    fun countPairSumElements(list: List<Int>): Int {
-//        return countPairSumElementsHelper(list, mutableSetOf(), 0, 1)
-//    }
-//
-//    private fun countPairSumElementsHelper(list: List<Int>, seen: MutableSet<Int>, index: Int, i: Int): Int {
-//        if (index >= list.size - 1) {
-//            return 0
-//        }
-//
-//        val sum = list[index] + list[index + i]
-//        var count = 0
-//        if (sum in list && sum !in seen) {
-//            count++
-//            seen.add(sum)
-//        }
-//        if (i <= list.size) {
-//            count = count + countPairSumElementsHelper(list, seen, index, i + 1)
-//        }
-//
-//        return count + countPairSumElementsHelper(list, seen, index + 1, i = 1)
-//    }
 
     fun countPairSumElements(list: List<Int>): Int {
         return countPairSumElementsHelper(list, mutableSetOf(), 0, 1)
@@ -488,7 +432,104 @@ class Main2 {
         return count + countPairSumElementsHelper(list, seen, index + 1, 1)
     }
 
-    
+
+
+
+
+    // Задание 7
+    // Вариант 4 Задачи 10, 1, 4
+//    1 Даны две последовательности, найти наибольшую по длине общую
+//    подпоследовательность.
+    fun findLongestCommonSubstring(str1: String, str2: String): String {
+        val substrings = str1.indices.flatMap { i ->
+            str1.indices.filter { j -> j >= i }.map { j ->
+                str1.substring(i, j + 1)
+            }
+        }.filter { substring ->
+            str2.contains(substring)
+        }.maxByOrNull { it.length }
+
+        return substrings ?: ""
+    }
+
+//    4 Для введенного списка построить новый с элементами вида (a,b,c), где a<b<c образуют
+//    Пифагорову тройку.
+
+//    fun findPythagoreanTriplets(numbers: List<Int>): List<Triple<Int, Int, Int>> {
+////        val triplets = mutableListOf<Triple<Int, Int, Int>>()
+////
+////        for (a in numbers) {
+////            for (b in a + 1 until numbers.size) {
+////                for (c in b + 1 until numbers.size) {
+////                    if (a * a + b * b == c * c) {
+////                        triplets.add(Triple(a, b, c))
+////                    }
+////                }
+////            }
+////        }
+////
+////        return triplets
+////    }
+
+    fun findPythagoreanTriplets(numbers: List<Int>): List<Triple<Int, Int, Int>> {
+        return numbers.flatMap { a ->
+            numbers.drop(numbers.indexOf(a) + 1).flatMap { b ->
+                numbers.drop(numbers.indexOf(b) + 1).filter { c -> a * a + b * b == c * c }
+                    .map { c -> Triple(a, b, c) }
+            }
+        }
+    }
+
+//    10 Для введенного списка вывести кортеж списков, составленных из
+//    List2 - номера элементов, которые могут быть получены как произведение двух любых
+//    других элементов списка
+//    List3 - номера элементов, которые могут быть получены как сумма трех любых других
+//    элементов списка.
+//    LIST 4- номера элементов, которые делятся ровно на четыре элемента из списка
+
+    // Элементы как произведение двух элементов
+    fun findMultiplicationPairs(numbers: List<Int>): List<Int> {
+        return numbers.flatMap { a ->
+            numbers.filter { b -> a != b && numbers.contains(a * b) }
+                .map { b -> a * b }
+        }.distinct().toList()
+    }
+
+    fun findIndicesOfSecondListInFirstList(list1: List<Int>, list2: List<Int>): List<Int> {
+        return list2.mapNotNull { num2 ->
+            list1.indexOfFirst { num1 -> num1 == num2 }
+        }
+    }
+
+    // Сумма трех элементов
+    fun findSumOfThree(numbers: List<Int>): List<Int> {
+        return numbers.flatMap { a ->
+            numbers.drop(numbers.indexOf(a) + 1).flatMap { b ->
+                numbers.drop(numbers.indexOf(b) + 1).mapNotNull { c ->
+                    val sum = a + b + c
+                    if (numbers.contains(sum)) sum else null
+                }
+            }
+        }.distinct().sorted()
+    }
+
+    // Делятся на 4 элемента
+
+
+    fun findDivisibleByFour(numbers: List<Int>): List<Int> {
+        return numbers.filter { num ->
+            numbers.count { it != num && num % it == 0 } == 4
+        }.sorted()
+    }
+
+
+
+
+
+
+
+
+
     fun main() {
         // Задание 1
 //        println("Введите количество элементов: ")
@@ -611,31 +652,66 @@ class Main2 {
 //        val count = countFibonacciNumbers(arr)
 //        println("Количество чисел Фибоначчи: $count") // Output: Number of Fibonacci numbers: 10
 
-        // Задание 5
-        val strings = listOf("adcd", "adcde", "ab", "adcdef", "abc", "a", "abcdefg")
-        val binaryTree = createBinaryTree(strings)
-        printBinaryTree(binaryTree.root)
-        print(TreeToLine(binaryTree.root))
+//        // Задание 5
+//        val strings = listOf("adcd", "adcde", "ab", "adcdef", "abc", "a", "abcdefg")
+//        val binaryTree = createBinaryTree(strings)
+//        printBinaryTree(binaryTree.root)
+//        print(TreeToLine(binaryTree.root))
+//
+//        // Задание 6
+//
+//        val myArray = intArrayOf(3, 7, 2, 9, 4, 1, 6)
+//        val minEven = findMinEven(myArray)
+//        println("\n\nМинимальный четный элемент ${myArray.contentToString()} ${minEven}")
+//
+//        val numbers = arrayOf<Any?>(2.5, 3, 4.7, 5, 6.1)
+//        println("Чередуются целые и вещественные числа ${numbers.contentToString()} ${checkAlternation(numbers)}") // true
+//
+//        val inputList = listOf(1, 2.5, 3, 4.7, 3, 5, 6.1, 2.5)
+//        val (l1, l2) = buildLists(inputList)
+//        println("Построить два списка ${inputList} L1: ${l1} L2: ${l2}")
+//
+//        val list = listOf(2, 3, 4, 5, 6)
+//        val count = countPairSumElements(list)
+//        println("Кол-во эл., которые являются суммой двух других эл. ${list} Кол-во: ${count}")
 
-        // Задание 6
+//        // Задание 7
+        val str1 = "DDFABCABCABCGADGBDGNRBDR"
+        val str2 = "DDDABCABCABCDD"
+        println(findLongestCommonSubstring(str1, str2))
 
-        val myArray = intArrayOf(3, 7, 2, 9, 4, 1, 6)
-        val minEven = findMinEven(myArray)
-        println("\n\nМинимальный четный элемент ${myArray.contentToString()} ${minEven}")
+        val numbers = listOf(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)
+        val result = findPythagoreanTriplets(numbers)
+        println(result)
+        // (3, 4, 5), (5, 12, 13), (6, 8, 10), (8, 15, 17), (12, 16, 20) и (20, 21, 29).
 
-        val numbers = arrayOf<Any?>(2.5, 3, 4.7, 5, 6.1)
-        println("Чередуются целые и вещественные числа ${numbers.contentToString()} ${checkAlternation(numbers)}") // true
 
-        val inputList = listOf(1, 2.5, 3, 4.7, 3, 5, 6.1, 2.5)
-        val (l1, l2) = buildLists(inputList)
-        println("Построить два списка ${inputList} L1: ${l1} L2: ${l2}")
+        val numbers1 = listOf(72, 3, 48, 132, 4, 6, 8, 12, 13)
+        val result1 = findMultiplicationPairs(numbers1)
+        // println(result1)
+        val result2 = findIndicesOfSecondListInFirstList(numbers1, result1)
+        //println(result2)
 
-        val list = listOf(2, 3, 4, 5, 6)
-        val count = countPairSumElements(list)
-        println("Кол-во эл., которые являются суммой двух других эл. ${list} Кол-во: ${count}")
+        val result3 = findSumOfThree(numbers1)
+        //  println(result3)
+        val result4 = findIndicesOfSecondListInFirstList(numbers1, result3)
+        //println(result4)
 
+        val result5 = findDivisibleByFour(numbers1)
+        // println(result5)
+        val result6 = findIndicesOfSecondListInFirstList(numbers1, result5)
+        //println(result6)
+
+        val myTuple = Triple(result2, result4, result6)
+        println(myTuple)
 
     }
 }
 
+
+
 fun main() = Main2().main()
+
+//Решить задачи с помощью функционального подхода на языке Kotlin. (без использования циклов и foreach).
+
+//Дан список. Построить списки: List1 - номера элементов, которые могут быть получены как произведение двух любых других элементов входного списка, List2 - номера элементов, которые могут быть получены как сумма трех любых других элементов входного списка, List3- номера элементов, которые делятся ровно на четыре элемента из входного списка
